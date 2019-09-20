@@ -1,0 +1,31 @@
+export default {
+  lang: 'en-us',
+  qDateFilter: {
+    compare: 'Compare',
+    custom: 'Custom',
+    today: 'Today',
+    yesterday: 'Yesterday',
+    '2_days_ago': '2 days ago',
+    '2_weeks_ago': '2 weeks ago',
+    '2_months_ago': '2 months ago',
+    '2_quarters_ago': '2 quarters ago',
+    this_week: 'This week',
+    last_7_days: 'Last 7 days',
+    last_week: 'Last week',
+    last_14_days: 'Last 14 days',
+    this_month: 'This month',
+    last_30_days: 'Last 30 days',
+    last_month: 'Last month',
+    this_quarter: 'This quarter',
+    last_90_days: 'last 90 days',
+    this_quarter: 'This quarter',
+    last_quarter: 'Last quarter',
+    this_year: 'This year',
+    last_year: 'Last year',
+    previous_period: 'Previous period',
+    from_start: 'From start',
+    compareTo: 'Compare to',
+    daysToToday: ' days until today',
+    daysToYesterday: ' days until yesterday'
+  }
+}

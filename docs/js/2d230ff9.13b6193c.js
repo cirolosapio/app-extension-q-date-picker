@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["2d230ff9"],{ef57:function(e,n,a){"use strict";a.r(n),n["default"]={lang:"fa-ir",qDateFilter:{}}}}]);

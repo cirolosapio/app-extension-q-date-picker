@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["2d0e2c34"],{"7fa0":function(e,n,a){"use strict";a.r(n),n["default"]={lang:"ml",qDateFilter:{}}}}]);

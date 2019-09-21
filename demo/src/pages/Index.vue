@@ -17,7 +17,7 @@
           <q-item-label>Locale</q-item-label>
         </q-item-section>
         <q-item-section>
-          <q-select readonly v-model="locale" :options="['it', 'en-us']" dense />
+          <q-select standout v-model="locale" :options="['it', 'en-us']" dense />
         </q-item-section>
       </q-item>
       <q-item v-for="(value, param) in colorsOptions" :key="`param-${param}`">
@@ -75,7 +75,7 @@ export default {
         previousColor: 'amber',
         toggleColor: 'teal'
       },
-      locale: 'en-us',
+      locale: 'it',
       noCompare: false,
       colors: [ 'primary', 'secondary', 'accent', 'red', 'green', 'teal', 'positive', 'negative', 'info', 'warning' ]
     }

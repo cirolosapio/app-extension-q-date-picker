@@ -25,23 +25,23 @@
           <div class="col-5">
             <q-list padding class="custom-list" style="transition: width .3s, height .3s">
               <q-tabs no-caps dense v-model="choise" vertical switch-indicator :indicator-color="color" active-bg-color="grey-2">
-                <q-tab name="custom" :label="$q.lang.qDateFilter.custom" />
+                <q-tab name="custom" :label="$q.lang.custom" />
                 <q-separator spaced />
-                <q-tab :name="value" :label="$q.lang.qDateFilter[value]" v-for="{ value } in periods" :key="value" />
+                <q-tab :name="value" :label="$q.lang[value]" v-for="{ value } in periods" :key="value" />
               </q-tabs>
               <q-separator spaced />
               <q-item class="q-pl-none q-py-none q-my-xs" style="min-height: 20px" clickable @click="choise = 'x_days_to_today'" :class="{ 'bg-grey-2': choise === 'x_days_to_today' }">
                 <q-separator vertical :color="choise === 'x_days_to_today' ? color : 'white'" style="width: 2px"/>
                 <div class="flex items-baseline q-gutter-x-sm q-pl-md q-py-xs">
                   <q-input v-model="days_to_today" dense style="max-width: 30px" @click.stop="$refs.days_to_today.focus()" ref="days_to_today" />
-                  <q-item-label>{{$q.lang.qDateFilter.daysToToday}}</q-item-label>
+                  <q-item-label>{{$q.lang.daysToToday}}</q-item-label>
                 </div>
               </q-item>
               <q-item class="q-pl-none q-py-none q-my-xs" style="min-height: 20px" clickable @click="choise = 'x_days_to_yesterday'" :class="{ 'bg-grey-2': choise === 'x_days_to_yesterday' }">
                 <q-separator vertical :color="choise === 'x_days_to_yesterday' ? color : 'white'" style="width: 2px"/>
                 <div class="flex items-baseline q-gutter-x-sm q-pl-md q-py-xs">
                   <q-input v-model="days_to_yesterday" dense style="max-width: 30px" @click.stop="$refs.days_to_yesterday.focus()" ref="days_to_yesterday" />
-                  <q-item-label>{{$q.lang.qDateFilter.daysToYesterday}}</q-item-label>
+                  <q-item-label>{{$q.lang.daysToYesterday}}</q-item-label>
                 </div>
               </q-item>
 
@@ -50,7 +50,7 @@
 
                 <q-item tag="label" dense clickable :disable="choise === 'from_start'">
                   <q-item-section>
-                    <q-item-label>{{$q.lang.qDateFilter.compare}}</q-item-label>
+                    <q-item-label>{{$q.lang.compare}}</q-item-label>
                   </q-item-section>
                   <q-item-section side>
                     <q-toggle v-model="comparing" dense :color="toggleColor" :disable="choise === 'from_start'" />
@@ -58,8 +58,8 @@
                 </q-item>
                 <q-tabs no-caps dense v-model="compare_choise" vertical switch-indicator :indicator-color="color" v-if="comparing">
                   <q-tab name="previous_period" :label="displayComparingValue" />
-                  <q-tab name="previous_year" :label="$q.lang.qDateFilter.last_year" />
-                  <q-tab name="custom" :label="$q.lang.qDateFilter.custom" />
+                  <q-tab name="previous_year" :label="$q.lang.last_year" />
+                  <q-tab name="custom" :label="$q.lang.custom" />
                 </q-tabs>
               </template>
 
@@ -80,7 +80,7 @@
               </div>
             </div>
             <template v-if="comparing">
-              <q-item-label caption class="q-pt-sm q-pl-md">{{$q.lang.qDateFilter.compare}}</q-item-label>
+              <q-item-label caption class="q-pt-sm q-pl-md">{{$q.lang.compare}}</q-item-label>
               <div class="row no-wrap items-baseline justify-center q-px-sm q-gutter-x-sm">
                 <div class="col">
                   <q-input v-model="previous_start" :color="previousColor" dense type="date" :rules="[ val => maxEnd(val, previous_end) ]" no-error-icon hide-bottom-space ref="input" />
@@ -117,7 +117,7 @@
           </div>
         </div>
 
-        <template v-if="choise === 'custom' || comparing">
+        <template v-if="['custom', 'x_days_to_today', 'x_days_to_yesterday'].includes(choise) || comparing">
           <q-separator  />
 
           <q-card-actions align="right">
@@ -131,7 +131,7 @@
     <!-- <q-separator /> -->
 
     <q-item-label class="float-right" caption v-if="comparing">
-      {{$q.lang.qDateFilter.compareTo}}: {{displayComparingDate}}
+      {{$q.lang.compareTo}}: {{displayComparingDate}}
     </q-item-label>
   </div>
 </template>
@@ -145,7 +145,8 @@ export default {
   props: {
     locale: {
       type: String,
-      default: () => 'it'
+      default: () => 'en-us',
+      required: true
     },
     value: {
       type: Object,
@@ -173,12 +174,12 @@ export default {
     }
   },
 
-  beforeCreate () { this.$q.lang.qDateFilter = {} },
-
   created () {
     import(`../lang/${this.locale}`).then(({ default: { qDateFilter } }) => {
-      this.$q.lang.qDateFilter = qDateFilter
+      Object.assign(this.$q.lang, qDateFilter)
     })
+
+    import(`moment/locale/${this.locale}`)
     if (m(this.value.start).isValid() && m(this.value.end).isValid()) this.selectedDate = {
       start: this.value.start,
       end: this.value.end
@@ -211,9 +212,9 @@ export default {
         { value: 'this_month', period: 'month', start: m().startOf('month'), end: m() },
         { value: 'last_30_days', start: m().subtract(29, 'days'), end: m() },
         { value: 'last_month', period: 'month', start: m().subtract(1, 'month').startOf('month'), end: m().subtract(1, 'month').endOf('month') },
-        { value: 'this_quarter', period: 'quarter', start: m().startOf('quarter'), end: m() },
-        { value: 'last_90_days', start: m().subtract(89, 'days'), end: m() },
-        { value: 'last_quarter', period: 'quarter', start: m().subtract(1, 'quarter').startOf('quarter'), end: m().subtract(1, 'quarter').endOf('quarter') },
+        // { value: 'this_quarter', period: 'quarter', start: m().startOf('quarter'), end: m() },
+        // { value: 'last_90_days', start: m().subtract(89, 'days'), end: m() },
+        // { value: 'last_quarter', period: 'quarter', start: m().subtract(1, 'quarter').startOf('quarter'), end: m().subtract(1, 'quarter').endOf('quarter') },
         { value: 'from_start', start: m().subtract(this.maxYears, 'years').startOf('month'), end: m() }
       ],
       previous_periods: [
@@ -225,15 +226,21 @@ export default {
         { value: 'last_14_days', start: m().subtract(27, 'days'), end: m().subtract(14, 'days') },
         { value: 'this_month', display: 'last_month', start: m().subtract(1, 'month').startOf('month'), end: m().subtract(1, 'month').endOf('month') },
         { value: 'last_30_days', start: m().subtract(59, 'days'), end: m().subtract(30, 'days') },
-        { value: 'last_month', display: '2_months_ago', start: m().subtract(2, 'month').startOf('month'), end: m().subtract(2, 'month').endOf('month') },
-        { value: 'this_quarter', display: 'last_quarter', start: m().subtract(1, 'quarter').startOf('quarter'), end: m().subtract(1, 'quarter').endOf('quarter') },
-        { value: 'last_90_days', start: m().subtract(179, 'days'), end: m().subtract(90, 'days') },
+        // { value: 'last_month', display: '2_months_ago', start: m().subtract(2, 'month').startOf('month'), end: m().subtract(2, 'month').endOf('month') },
+        // { value: 'this_quarter', display: 'last_quarter', start: m().subtract(1, 'quarter').startOf('quarter'), end: m().subtract(1, 'quarter').endOf('quarter') },
+        // { value: 'last_90_days', start: m().subtract(179, 'days'), end: m().subtract(90, 'days') },
         { value: 'last_quarter', display: '2_quarters_ago', start: m().subtract(2, 'quarter').startOf('quarter'), end: m().subtract(2, 'quarter').endOf('quarter') }
       ]
     }
   },
 
   watch: {
+    locale (lang) {
+      import(`../lang/${lang}`).then(({ default: { qDateFilter } }) => {
+        Object.assign(this.$q.lang, qDateFilter)
+      })
+      if (lang !== 'en-us') import(`moment/locale/${lang}`)
+    },
     choise (choise) {
       if (choise !== 'custom') this.lastChoise = choise
       if (choise === 'from_start') this.comparing = false
@@ -243,7 +250,7 @@ export default {
       } else if (choise === 'x_days_to_today') this.selectedDate = { start: m().subtract(this.days_to_today - 1, 'days').toDate(), end: m().toDate() }
       else if (choise === 'x_days_to_yesterday') this.selectedDate = { start: m().subtract(this.days_to_yesterday, 'days').toDate(), end: m().subtract(1, 'days').toDate() }
       else return
-      if (!this.comparing) this.$refs.menu.hide()
+      if (!this.comparing && !['x_days_to_today', 'x_days_to_yesterday'].includes(choise)) this.$refs.menu.hide()
     },
     days_to_today (days) {
       this.choise = 'x_days_to_today'
@@ -391,10 +398,10 @@ export default {
       return (date, end) => end ? date <= end : true
     },
     displayValue () {
-      if (this.periods.findIndex(({ value }) => value === this.choise) !== -1) return this.$q.lang.qDateFilter[this.choise]
-      else if (this.choise === 'x_days_to_today') return this.days_to_today + this.$q.lang.qDateFilter.daysToToday
-      else if (this.choise === 'x_days_to_yesterday') return this.days_to_yesterday + this.$q.lang.qDateFilter.daysToYesterday
-      return this.$q.lang.qDateFilter.custom
+      if (this.periods.findIndex(({ value }) => value === this.choise) !== -1) return this.$q.lang[this.choise]
+      else if (this.choise === 'x_days_to_today') return this.days_to_today + this.$q.lang.daysToToday
+      else if (this.choise === 'x_days_to_yesterday') return this.days_to_yesterday + this.$q.lang.daysToYesterday
+      return this.$q.lang.custom
     },
     displayDate () {
       // if (!m(this.start).isValid() || !m(this.end).isValid()) return ''
@@ -406,8 +413,8 @@ export default {
     displayComparingValue () {
       if (this.choise && !['from_start', 'custom', 'x_days_to_today', 'x_days_to_yesterday'].includes(this.choise) && !this.isCustom) {
         let { display } = this.previous_periods.find(({ value }) => value === this.choise)
-        return display ? this.$q.lang.qDateFilter[display] : this.$q.lang.qDateFilter.previous_period
-      } return this.$q.lang.qDateFilter.previous_period
+        return display ? this.$q.lang[display] : this.$q.lang.previous_period
+      } return this.$q.lang.previous_period
     },
     displayComparingDate () {
       if (this.previous_start === this.previous_end) return m(this.previous_start).format('D MMM YYYY')

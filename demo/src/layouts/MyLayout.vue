@@ -15,12 +15,21 @@
     <q-drawer v-model="leftDrawerOpen" bordered content-class="bg-grey-2">
       <q-list>
         <q-item-label header>Menu</q-item-label>
+        <q-item clickable tag="a" target="_blank" href="https://github.com/heartbeatLV/app-extension-q-filter-configurator">
+          <q-item-section avatar>
+            <q-icon name="mdi-github-circle" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>QFilterConfigurator</q-item-label>
+            <q-item-label caption>@app-extension-q-filter-configurator</q-item-label>
+          </q-item-section>
+        </q-item>
         <q-item clickable tag="a" target="_blank" href="https://github.com/heartbeatLV/app-extension-q-date-filter">
           <q-item-section avatar>
             <q-icon name="mdi-github-circle" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Repository</q-item-label>
+            <q-item-label>QDateFilter</q-item-label>
             <q-item-label caption>@app-extension-q-date-filter</q-item-label>
           </q-item-section>
         </q-item>

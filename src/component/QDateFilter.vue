@@ -19,9 +19,9 @@
         </div>
       </q-item-section>
 
-      <q-menu fit anchor="top right" self="top right" :offset="[70, 0]" transition-show="jump-left" transition-hide="jump-right" max-height="1000px"
+      <q-menu cover anchor="top right" :offset="[70, 0]" transition-show="jump-left" transition-hide="jump-right" max-height="1000px"
         ref="menu" :persistent="choise === 'custom' || comparing">
-        <div class="row">
+        <div class="row" :style="{ minWidth }">
           <div class="col-5">
             <q-list padding class="custom-list" style="transition: width .3s, height .3s">
               <q-tabs no-caps dense v-model="choise" vertical switch-indicator :indicator-color="color" active-bg-color="grey-2">
@@ -121,14 +121,12 @@
           <q-separator  />
 
           <q-card-actions align="right">
-            <q-btn no-caps flat :label="$q.lang.label.cancel" color="grey" v-close-popup />
-            <q-btn no-caps flat :label="$q.lang.label.set" :color="color" @click="ok()" v-close-popup />
+            <q-btn no-caps flat :label="$q.lang.label.cancel" color="grey" @click="$refs.menu.hide()" />
+            <q-btn no-caps flat :label="$q.lang.label.set" :color="color" @click="ok(), $refs.menu.hide()" />
           </q-card-actions>
         </template>
       </q-menu>
     </q-item>
-
-    <!-- <q-separator /> -->
 
     <q-item-label class="float-right" caption v-if="comparing">
       {{$q.lang.compareTo}}: {{displayComparingDate}}
@@ -156,6 +154,10 @@ export default {
       type: Boolean,
       default: () => false
     },
+    minWidth: {
+      type: String,
+      default: () => '450px'
+    },
     maxYears: {
       type: Number,
       default: () => 2
@@ -178,8 +180,8 @@ export default {
     import(`../lang/${this.locale}`).then(({ default: { qDateFilter } }) => {
       Object.assign(this.$q.lang, qDateFilter)
     })
+    if (this.locale !== 'en-us') import(`moment/locale/${this.locale}`)
 
-    import(`moment/locale/${this.locale}`)
     if (m(this.value.start).isValid() && m(this.value.end).isValid()) this.selectedDate = {
       start: this.value.start,
       end: this.value.end
@@ -239,7 +241,7 @@ export default {
       import(`../lang/${lang}`).then(({ default: { qDateFilter } }) => {
         Object.assign(this.$q.lang, qDateFilter)
       })
-      if (lang !== 'en-us') import(`moment/locale/${lang}`)
+      if (lang !== 'en-us') import(`moment/locale/${this.lang}`)
     },
     choise (choise) {
       if (choise !== 'custom') this.lastChoise = choise

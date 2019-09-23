@@ -1,9 +1,9 @@
 <template>
   <q-page padding>
     <q-list class="float-left" style="min-width: 40vw">
-      <q-item-label header>Result</q-item-label>
+      <q-item-label header>Model</q-item-label>
       <q-item v-for="(prop, key) in date" :key="key">
-        <q-item-section side>
+        <q-item-section>
           <q-item-label>{{key}}</q-item-label>
         </q-item-section>
         <q-item-section>
@@ -17,7 +17,7 @@
           <q-item-label>Locale</q-item-label>
         </q-item-section>
         <q-item-section>
-          <q-select standout v-model="locale" :options="['it', 'en-us']" dense />
+          <q-select standout v-model="locale" :options="langOptions" dense emit-value map-options options-dense />
         </q-item-section>
       </q-item>
       <q-item v-for="(value, param) in colorsOptions" :key="`param-${param}`">
@@ -63,6 +63,7 @@
 </style>
 
 <script>
+import languages from 'quasar/lang/index.json'
 import { QCheckbox, QSeparator, QSelect, QBadge } from 'quasar'
 export default {
   name: 'PageIndex',
@@ -75,9 +76,24 @@ export default {
         previousColor: 'amber',
         toggleColor: 'teal'
       },
-      locale: 'it',
+      locale: this.$q.lang.isoName,
+      langOptions: [],
       noCompare: false,
       colors: [ 'primary', 'secondary', 'accent', 'red', 'green', 'teal', 'positive', 'negative', 'info', 'warning' ]
+    }
+  },
+
+  created () {
+    this.langOptions = languages.map(({ isoName, nativeName }) => ({
+      label: nativeName, value: isoName, disable: !['it', 'en-us'].includes(isoName)
+    }))
+  },
+
+  watch: {
+    locale (lang) {
+      import(`quasar/lang/${lang}`).then(lang => {
+        this.$q.lang.set(lang.default)
+      })
     }
   }
 }

@@ -1,4 +1,4 @@
-QDateFilter (q-date-filter)
+Quasar App Extension - QDateFilter (q-date-filter)
 ===
 
 > Please note that QDateFilter is in alpha state.
@@ -28,3 +28,6 @@ Can be found [here](https://github.com/heartbeatLV/app-extension-q-date-filter/t
 
 # Demo Project
 Can be found [here](https://heartbeatLV.github.io/app-extension-q-date-filter).
+
+# Patreon
+If you like (and use) this App Extension, please consider becoming a Quasar [Patreon](https://www.patreon.com/quasarframework).

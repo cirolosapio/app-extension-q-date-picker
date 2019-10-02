@@ -8,6 +8,17 @@
       "examples": [ "v-model=\"myText\"" ],
       "category": "model"
     },
+    "max-years": {
+      "type": [ "Number" ],
+      "desc": "",
+      "default": 2,
+      "category": "model"
+    },
+    "locale": {
+      "type": [ "String" ],
+      "desc": "The language of the component",
+      "category": "style"
+    },
     "no-compare": {
       "type": [ "Boolean" ],
       "desc": "Disable compare mode",

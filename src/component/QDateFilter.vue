@@ -19,47 +19,47 @@
         </div>
       </q-item-section>
 
-      <q-popup-proxy maximized anchor="top right" self="top right" transition-show="jump-left" transition-hide="jump-right" max-height="1000px"
+      <q-popup-proxy maximized cover anchor="top right" transition-show="jump-left" transition-hide="jump-right" max-height="1000px"
         ref="menu" :persistent="choise === 'custom' || comparing">
         <div class="bg-white column no-wrap justify-between">
           <div class="row full-height">
             <div class="col-5">
               <q-list padding class="custom-list" style="transition: width .3s, height .3s">
                 <q-tabs no-caps dense v-model="choise" vertical switch-indicator :indicator-color="color" active-bg-color="grey-2">
-                  <q-tab name="custom" :label="$q.lang.custom" />
-                  <q-separator spaced />
-                  <q-tab :name="value" :label="$q.lang[value]" v-for="{ value } in periods" :key="value" />
-                </q-tabs>
+                <q-tab name="custom" :label="$q.lang.custom" />
                 <q-separator spaced />
-                <q-item class="q-pl-none q-py-none q-my-xs" style="min-height: 20px" clickable @click="choise = 'x_days_to_today'" :class="{ 'bg-grey-2': choise === 'x_days_to_today' }">
-                  <q-separator vertical :color="choise === 'x_days_to_today' ? color : 'white'" style="width: 2px"/>
-                  <div class="flex items-baseline q-gutter-x-sm q-pl-md q-py-xs">
-                    <q-input v-model="days_to_today" dense style="max-width: 30px" @click.stop="$refs.days_to_today.focus()" ref="days_to_today" />
-                    <q-item-label>{{$q.lang.daysToToday}}</q-item-label>
-                  </div>
-                </q-item>
-                <q-item class="q-pl-none q-py-none q-my-xs" style="min-height: 20px" clickable @click="choise = 'x_days_to_yesterday'" :class="{ 'bg-grey-2': choise === 'x_days_to_yesterday' }">
-                  <q-separator vertical :color="choise === 'x_days_to_yesterday' ? color : 'white'" style="width: 2px"/>
-                  <div class="flex items-baseline q-gutter-x-sm q-pl-md q-py-xs">
-                    <q-input v-model="days_to_yesterday" dense style="max-width: 30px" @click.stop="$refs.days_to_yesterday.focus()" ref="days_to_yesterday" />
-                    <q-item-label>{{$q.lang.daysToYesterday}}</q-item-label>
-                  </div>
-                </q-item>
+                <q-tab :name="value" :label="$q.lang[value]" v-for="{ value } in periods" :key="value" />
+              </q-tabs>
+              <q-separator spaced />
+              <q-item class="q-pl-none q-py-none q-my-xs" style="min-height: 20px" clickable @click="choise = 'x_days_to_today'" :class="{ 'bg-grey-2': choise === 'x_days_to_today' }">
+                <q-separator vertical :color="choise === 'x_days_to_today' ? color : 'white'" style="width: 2px"/>
+                <div class="flex items-baseline q-gutter-x-sm q-pl-md q-py-xs">
+                  <q-input v-model="days_to_today" dense style="max-width: 30px" @click.stop="$refs.days_to_today.focus()" ref="days_to_today" />
+                  <q-item-label>{{$q.lang.daysToToday}}</q-item-label>
+                </div>
+              </q-item>
+              <q-item class="q-pl-none q-py-none q-my-xs" style="min-height: 20px" clickable @click="choise = 'x_days_to_yesterday'" :class="{ 'bg-grey-2': choise === 'x_days_to_yesterday' }">
+                <q-separator vertical :color="choise === 'x_days_to_yesterday' ? color : 'white'" style="width: 2px"/>
+                <div class="flex items-baseline q-gutter-x-sm q-pl-md q-py-xs">
+                  <q-input v-model="days_to_yesterday" dense style="max-width: 30px" @click.stop="$refs.days_to_yesterday.focus()" ref="days_to_yesterday" />
+                  <q-item-label>{{$q.lang.daysToYesterday}}</q-item-label>
+                </div>
+              </q-item>
 
-                <template v-if="!noCompare">
-                  <q-separator spaced />
+              <template v-if="!noCompare">
+                <q-separator spaced />
 
-                  <q-item tag="label" dense clickable :disable="choise === 'from_start'">
-                    <q-item-section>
-                      <q-item-label>{{$q.lang.compare}}</q-item-label>
-                    </q-item-section>
-                    <q-item-section side>
-                      <q-toggle v-model="comparing" dense :color="toggleColor" :disable="choise === 'from_start'" />
-                    </q-item-section>
-                  </q-item>
-                  <q-tabs no-caps dense v-model="compare_choise" vertical switch-indicator :indicator-color="color" v-if="comparing">
-                    <q-tab name="previous_period" :label="displayComparingValue" />
-                    <q-tab name="previous_year" :label="$q.lang.last_year" />
+                <q-item tag="label" dense clickable :disable="choise === 'from_start'">
+                  <q-item-section>
+                    <q-item-label>{{$q.lang.compare}}</q-item-label>
+                  </q-item-section>
+                  <q-item-section side>
+                    <q-toggle v-model="comparing" dense :color="toggleColor" :disable="choise === 'from_start'" />
+                  </q-item-section>
+                </q-item>
+                <q-tabs no-caps dense v-model="compare_choise" vertical switch-indicator :indicator-color="color" v-if="comparing">
+                  <q-tab name="previous_period" :label="displayComparingValue" />
+                  <q-tab name="previous_year" :label="$q.lang.last_year" />
                     <q-tab name="custom" :label="$q.lang.custom" />
                   </q-tabs>
                 </template>
@@ -122,15 +122,13 @@
             <q-separator  />
 
             <q-card-actions align="right">
-              <q-btn no-caps flat :label="$q.lang.label.cancel" color="grey" v-close-popup />
-              <q-btn no-caps flat :label="$q.lang.label.set" :color="color" @click="ok()" v-close-popup />
+              <q-btn no-caps flat :label="$q.lang.label.cancel" color="grey" @click="$refs.menu.hide()" />
+              <q-btn no-caps flat :label="$q.lang.label.set" :color="color" @click="ok(), $refs.menu.hide()" />
             </q-card-actions>
           </div>
         </div>
       </q-popup-proxy>
     </q-item>
-
-    <!-- <q-separator /> -->
 
     <q-item-label class="float-right" caption v-if="comparing">
       {{$q.lang.compareTo}}: {{displayComparingDate}}
@@ -179,6 +177,7 @@ export default {
         this.$set(this.$q.lang, key, value)
       })
     })
+    if (this.locale !== 'en-us') import(`moment/locale/${this.locale}`)
 
     if (m(this.value.start).isValid() && m(this.value.end).isValid()) this.selectedDate = {
       start: this.value.start,
@@ -348,7 +347,7 @@ export default {
       let height = 30 * (this.periods.length) + 142
       height += this.$q.screen.xs ? 108 : 0
       height += this.comparing ? 38 : 0
-      height += this.noCompare ? -45 : 0
+      height += this.noCompare ? (this.$q.screen.xs ? -16 : -45) : 0
       height += 'px'
       this.calendarHeight = { height }
     }

@@ -1,9 +1,9 @@
 <template>
   <q-page padding>
     <q-list class="float-left" style="min-width: 40vw">
-      <q-item-label header>Result</q-item-label>
+      <q-item-label header>Model</q-item-label>
       <q-item v-for="(prop, key) in date" :key="key">
-        <q-item-section side>
+        <q-item-section>
           <q-item-label>{{key}}</q-item-label>
         </q-item-section>
         <q-item-section>
@@ -74,10 +74,10 @@ export default {
         previousColor: 'amber',
         toggleColor: 'teal'
       },
-      locale: 'en-us',
+      locale: this.$q.lang.isoName,
+      langOptions: [],
       noCompare: false,
-      colors: [ 'primary', 'secondary', 'accent', 'red', 'green', 'teal', 'positive', 'negative', 'info', 'warning' ],
-      langOptions: []
+      colors: [ 'primary', 'secondary', 'accent', 'red', 'green', 'teal', 'positive', 'negative', 'info', 'warning' ]
     }
   },
 

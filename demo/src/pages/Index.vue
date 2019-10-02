@@ -17,7 +17,7 @@
           <q-item-label>Locale</q-item-label>
         </q-item-section>
         <q-item-section>
-          <q-select standout v-model="locale" :options="['it', 'en-us']" dense />
+          <q-select standout v-model="locale" :options="langOptions" dense emit-value map-options options-dense />
         </q-item-section>
       </q-item>
       <q-item v-for="(value, param) in colorsOptions" :key="`param-${param}`">
@@ -63,10 +63,9 @@
 </style>
 
 <script>
-import { QCheckbox, QSeparator, QSelect, QBadge } from 'quasar'
+import languages from 'quasar/lang/index.json'
 export default {
   name: 'PageIndex',
-  components: { QCheckbox, QSeparator, QSelect, QBadge },
   data () {
     return {
       date: {},
@@ -75,9 +74,24 @@ export default {
         previousColor: 'amber',
         toggleColor: 'teal'
       },
-      locale: 'it',
+      locale: 'en-us',
       noCompare: false,
-      colors: [ 'primary', 'secondary', 'accent', 'red', 'green', 'teal', 'positive', 'negative', 'info', 'warning' ]
+      colors: [ 'primary', 'secondary', 'accent', 'red', 'green', 'teal', 'positive', 'negative', 'info', 'warning' ],
+      langOptions: []
+    }
+  },
+
+  created () {
+    this.langOptions = languages.map(({ isoName, nativeName }) => ({
+      label: nativeName, value: isoName, disable: !['it', 'en-us'].includes(isoName)
+    })).sort((a, b) => a.label > b.label)
+  },
+
+  watch: {
+    locale (lang) {
+      import(`quasar/lang/${lang}`).then(lang => {
+        this.$q.lang.set(lang.default)
+      })
     }
   }
 }

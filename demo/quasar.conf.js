@@ -28,33 +28,20 @@ module.exports = function (ctx) {
       // iconSet: 'ionicons-v4',
       // lang: 'it', // Quasar language
 
-      // all: true, // --- includes everything; for dev only!
+      // Possible values for "all":
+      // * 'auto' - Auto-import needed Quasar components & directives
+      //            (slightly higher compile time; next to minimum bundle size; most convenient)
+      // * false  - Manually specify what to import
+      //            (fastest compile time; minimum bundle size; most tedious)
+      // * true   - Import everything from Quasar
+      //            (not treeshaking Quasar; biggest bundle size; convenient)
+      all: 'auto',
 
-      components: [
-        'QLayout',
-        'QHeader',
-        'QDrawer',
-        'QPageContainer',
-        'QPage',
-        'QToolbar',
-        'QToolbarTitle',
-        'QBtn',
-        'QIcon',
-        'QList',
-        'QItem',
-        'QItemSection',
-        'QItemLabel'
-      ],
-
-      directives: [
-        'Ripple',
-        'ClosePopup'
-      ],
+      components: [],
+      directives: [],
 
       // Quasar plugins
-      plugins: [
-        'Notify'
-      ]
+      plugins: []
     },
 
     supportIE: false,
@@ -72,7 +59,10 @@ module.exports = function (ctx) {
           enforce: 'pre',
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
-          exclude: /node_modules/
+          exclude: /node_modules/,
+          options: {
+            formatter: require('eslint').CLIEngine.getFormatter('stylish')
+          }
         })
       }
     },
@@ -84,7 +74,7 @@ module.exports = function (ctx) {
       watchOptions: {
         ignored: [
           'node_modules',
-          '!node_modules/quasar-app-extension-q-date-filter'
+          '!node_modules/quasar-app-extension-q-date-filter/src'
         ]
       }
     },

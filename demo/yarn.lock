@@ -6795,13 +6795,15 @@ qs@~6.5.2:
   integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
 
 "quasar-app-extension-q-date-filter@link:..":
-  version "0.0.0"
-  uid ""
+  version "0.0.6"
+  dependencies:
+    moment "^2.24.0"
+    v-calendar "1.0.0-beta.16"
 
-quasar@^1.1.6:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/quasar/-/quasar-1.1.6.tgz#91d5b7b2b763732cea9a19134df4dbfc26923210"
-  integrity sha512-QzWtgpdT30RGvmgZ1SpmuxrQRicIDTxhrjHB+2wVdtNH2K7DZVmKAgvoCOTytsBIDEe+vqf236p5zXvQK4DFpA==
+quasar@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/quasar/-/quasar-1.2.2.tgz#9a64bb35814833c36a2585b86c5b84d862064510"
+  integrity sha512-aBeFvd/UGQfEdZM5Kd2z3qV/LXfetWL3gOJL6wnLdqhjFkOvaecc8r9HV6EKPt/pFiL1rlpwTOkQ2ARNTuYJJw==
 
 query-string@^4.1.0:
   version "4.3.4"

@@ -46,6 +46,6 @@
   },
   "dependencies": {
     "moment": "^2.24.0",
-    "v-calendar": "1.0.0-beta.16"
+    "v-calendar": "1.0.0-beta.22"
   }
 }

@@ -6890,10 +6890,10 @@ qs@~6.5.2:
     moment "^2.24.0"
     v-calendar "1.0.0-beta.22"
 
-quasar@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/quasar/-/quasar-1.2.2.tgz#9a64bb35814833c36a2585b86c5b84d862064510"
-  integrity sha512-aBeFvd/UGQfEdZM5Kd2z3qV/LXfetWL3gOJL6wnLdqhjFkOvaecc8r9HV6EKPt/pFiL1rlpwTOkQ2ARNTuYJJw==
+quasar@^1.2.7:
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/quasar/-/quasar-1.2.7.tgz#2b91cfa2593d60fa5cdec467f28f9cee0c294916"
+  integrity sha512-tg8noqiqR8q+sT6uoakhmCPtv+dNlVq12LvHR+VlGV/ScL7v+UwL5GcfTD3Ted5Ykk/VnD3+ibRp7KDGtlcXhA==
 
 query-string@^4.1.0:
   version "4.3.4"

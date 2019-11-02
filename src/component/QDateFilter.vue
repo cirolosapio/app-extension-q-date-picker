@@ -89,7 +89,7 @@
 
               <div style="overflow-y: auto; overflow-x: hidden" :style="calendarHeight">
                 <v-date-picker :color="color" :is-dark="$q.dark.isActive" mode="range" v-model="selectedDate" title-position="left" :rows="2" is-inline :attributes="attrs"
-                  is-expanded style="border-width: 0px">
+                  is-expanded style="border-width: 0px; margin-right: 17px">
                   <template #header="{ title }">
                     <div class="vc-header vc-text-gray-900">
                       <div class="vc-title-layout align-left">
@@ -99,11 +99,11 @@
                       </div>
                     </div>
                   </template>
-                  <template #header-left-button>
-                    <q-btn dense round flat icon="keyboard_arrow_left" />
+                  <template #nav-left-button>
+                    <q-icon name="keyboard_arrow_left" />
                   </template>
-                  <template #header-right-button>
-                    <q-btn dense round flat icon="keyboard_arrow_right" />
+                  <template #nav-right-button>
+                    <q-icon name="keyboard_arrow_right" class="q-pr-md" />
                   </template>
                 </v-date-picker>
               </div>
@@ -485,6 +485,10 @@ export default {
         height 30px
     .q-field__native
       padding 0px
+  .vc-grid-container
+    padding-right 15px
+  .vc-arrows-container
+    padding-right 24px !important
   .vc-grid-cell
     .on-left
       margin-right 0

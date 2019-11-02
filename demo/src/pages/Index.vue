@@ -57,7 +57,7 @@
       </q-item>
       <q-item tag="label" clickable dense>
         <q-item-section>
-          <q-item-label>noComparing</q-item-label>
+          <q-item-label>noCompare</q-item-label>
         </q-item-section>
         <q-item-section side>
           <q-checkbox v-model="config.noCompare" />

@@ -38,7 +38,7 @@
                   <q-item-label>{{$q.lang.daysToToday}}</q-item-label>
                 </div>
               </q-item>
-              <q-item class="q-pl-none q-py-none q-my-xs" style="min-height: 20px" clickable @click="choise = 'x_days_to_yesterday'" :class="{ 'bg-grey-2': choise === 'x_days_to_yesterday' }">
+              <q-item class="q-pl-none q-py-none q-my-xs" style="min-height: 20px" clickable @click="choise = 'x_days_to_yesterday'" :class="{ [activeBgColor]: choise === 'x_days_to_yesterday' }">
                 <q-separator vertical :color="choise === 'x_days_to_yesterday' ? color : bg" style="width: 2px"/>
                 <div class="flex items-baseline q-gutter-x-sm q-pl-md q-py-xs">
                   <q-input v-model="days_to_yesterday" dense style="max-width: 30px" @click.stop="$refs.days_to_yesterday.focus()" ref="days_to_yesterday" />

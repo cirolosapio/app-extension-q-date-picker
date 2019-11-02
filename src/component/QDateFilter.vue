@@ -164,11 +164,11 @@ export default {
     },
     color: {
       type: String,
-      default: () => 'primary'
+      default: () => 'blue'
     },
     previousColor: {
       type: String,
-      default: () => 'amber'
+      default: () => 'yellow'
     },
     toggleColor: {
       type: String,

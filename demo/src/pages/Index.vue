@@ -14,10 +14,10 @@
       <q-item-label header>Playground</q-item-label>
       <q-item>
         <q-item-section>
-          <q-item-label>Locale</q-item-label>
+          <q-item-label>locale</q-item-label>
         </q-item-section>
         <q-item-section>
-          <q-select standout v-model="locale" :options="langOptions" dense emit-value map-options options-dense />
+          <q-select standout v-model="config.locale" :options="langOptions" dense emit-value map-options options-dense />
         </q-item-section>
       </q-item>
       <q-item v-for="(value, param) in colorsOptions" :key="`param-${param}`">
@@ -39,23 +39,36 @@
           </q-select>
         </q-item-section>
       </q-item>
-      <q-item tag="label" clickable>
-        <q-item-section no-wrap>
-          <q-item-label>Disable comparing</q-item-label>
+      <q-item>
+        <q-item-section>
+          <q-item-label>transition-show</q-item-label>
         </q-item-section>
         <q-item-section side>
-          <q-checkbox v-model="noCompare" />
+          <q-input standout dense v-model="config.transitionShow" />
+        </q-item-section>
+      </q-item>
+      <q-item>
+        <q-item-section>
+          <q-item-label>transition-hide</q-item-label>
+        </q-item-section>
+        <q-item-section side>
+          <q-input standout dense v-model="config.transitionHide" />
+        </q-item-section>
+      </q-item>
+      <q-item tag="label" clickable dense>
+        <q-item-section>
+          <q-item-label>noComparing</q-item-label>
+        </q-item-section>
+        <q-item-section side>
+          <q-checkbox v-model="config.noCompare" />
         </q-item-section>
       </q-item>
     </q-list>
+
     <q-date-filter
       v-model="date"
       class="float-right"
-      :locale="locale"
-      :no-compare="noCompare"
-      :color="colorsOptions.color"
-      :previous-color="colorsOptions.previousColor"
-      :toggle-color="colorsOptions.toggleColor" />
+      v-bind="{ ...config, ...colorsOptions }" />
   </q-page>
 </template>
 
@@ -69,14 +82,20 @@ export default {
   data () {
     return {
       date: {},
+
+      config: {
+        locale: this.$q.lang.isoName,
+        noCompare: false,
+        transitionShow: 'jump-left',
+        transitionHide: 'jump-right'
+      },
       colorsOptions: {
         color: 'blue',
         previousColor: 'amber',
         toggleColor: 'teal'
       },
-      locale: this.$q.lang.isoName,
+
       langOptions: [],
-      noCompare: false,
       colors: [ 'blue', 'purple', 'red', 'green', 'teal', 'orange', 'indigo' ]
     }
   },

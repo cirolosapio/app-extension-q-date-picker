@@ -91,12 +91,12 @@ export default {
       },
       colorsOptions: {
         color: 'blue',
-        previousColor: 'amber',
+        previousColor: 'orange',
         toggleColor: 'teal'
       },
 
       langOptions: [],
-      colors: [ 'blue', 'purple', 'red', 'green', 'teal', 'orange', 'indigo' ]
+      colors: [ 'blue', 'purple', 'red', 'green', 'teal', 'orange', 'indigo', 'yellow', 'pink' ]
     }
   },
 

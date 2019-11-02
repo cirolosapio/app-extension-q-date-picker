@@ -71,25 +71,17 @@
             <q-separator vertical />
 
             <div class="col">
-              <div class="row no-wrap items-baseline justify-center q-px-sm q-pt-sm q-gutter-x-sm">
-                <div class="col">
-                  <q-input v-model="start" :color="color" dense type="date" style="min-width: 110px" :rules="[ val => maxEnd(val, end) ]" no-error-icon hide-bottom-space ref="input" />
-                </div>
+              <div class="flex justify-between items-baseline q-px-xs custom-input">
+                <q-input v-model="start" :color="color" dense type="date" :rules="[ val => maxEnd(val, end) ]" no-error-icon hide-bottom-space />
                 <q-icon name="mdi-minus" />
-                <div class="col">
-                  <q-input v-model="end" :color="color" dense type="date" style="min-width: 110px" :rules="[ val => minStart(val, start) ]" no-error-icon hide-bottom-space ref="input" />
-                </div>
+                <q-input v-model="end" :color="color" dense type="date" :rules="[ val => minStart(val, start) ]" no-error-icon hide-bottom-space />
               </div>
               <template v-if="comparing">
                 <q-item-label caption class="q-pt-sm q-pl-md">{{$q.lang.compare}}</q-item-label>
-                <div class="row no-wrap items-baseline justify-center q-px-sm q-gutter-x-sm">
-                  <div class="col">
-                    <q-input v-model="previous_start" :color="previousColor" dense type="date" :rules="[ val => maxEnd(val, previous_end) ]" no-error-icon hide-bottom-space ref="input" />
-                  </div>
+                <div class="flex justify-between items-baseline q-px-xs custom-input">
+                  <q-input v-model="previous_start" :color="previousColor" dense type="date" :rules="[ val => maxEnd(val, previous_end) ]" no-error-icon hide-bottom-space />
                   <q-icon name="mdi-minus" />
-                  <div class="col">
-                    <q-input v-model="previous_end" :color="previousColor" dense type="date" :rules="[ val => minStart(val, previous_start) ]" no-error-icon hide-bottom-space ref="input" />
-                  </div>
+                  <q-input v-model="previous_end" :color="previousColor" dense type="date" :rules="[ val => minStart(val, previous_start) ]" no-error-icon hide-bottom-space />
                 </div>
               </template>
 
@@ -357,7 +349,7 @@ export default {
       this.ok()
     },
     onResize () {
-      let height = 30 * (this.periods.length) + 142
+      let height = 30 * (this.periods.length) + 150
       height += this.$q.screen.xs ? 108 : 0
       height += this.comparing ? 38 : 0
       height += this.noCompare ? (this.$q.screen.xs ? -16 : -45) : 0
@@ -487,11 +479,12 @@ export default {
     .q-field--dense
       .q-field__control
         height 20px
-  .q-field--dense
-    .q-field__control
-      height 30px
-  .q-field__native
-    padding 0px
+  .custom-input
+    .q-field--dense
+      .q-field__control
+        height 30px
+    .q-field__native
+      padding 0px
   .vc-grid-cell
     .on-left
       margin-right 0
@@ -505,5 +498,5 @@ export default {
   .q-pr-sm-important
     padding-right 8px !important
   // .q-pl-sm-important
-  //   padding-left 8px !important
+    //   padding-left 8px !important
 </style>

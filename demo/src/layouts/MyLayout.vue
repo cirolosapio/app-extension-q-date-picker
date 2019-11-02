@@ -8,11 +8,12 @@
           QDateFilter Demo
         </q-toolbar-title>
 
+        <q-btn flat round @click="$q.dark.set(!$q.dark.isActive)" icon="invert_colors" />
         <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" bordered content-class="bg-grey-2">
+    <q-drawer v-model="leftDrawerOpen" bordered :content-class="$q.dark.isActive ? '' : 'bg-grey-2'">
       <q-item-label header>Menu</q-item-label>
       <q-list>
         <q-expansion-item group="links" expand-separator default-opened icon="mdi-github-circle" label="Other App Extensions" caption="@heartbeatLV" dark header-class="bg-teal">
@@ -101,11 +102,10 @@
 </template>
 
 <script>
-import { openURL, QExpansionItem } from 'quasar'
+import { openURL } from 'quasar'
 
 export default {
   name: 'MyLayout',
-  components: { QExpansionItem },
   data () {
     return {
       leftDrawerOpen: this.$q.platform.is.desktop

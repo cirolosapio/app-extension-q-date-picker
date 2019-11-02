@@ -1,6 +1,6 @@
 {
   "name": "quasar-app-extension-q-date-filter",
-  "version": "v0.0.5",
+  "version": "v0.0.7",
   "description": "QDateFilter - Quasar App Extension",
   "author": "lscorion <lscorionjs@gmail.com>",
   "license": "MIT",
@@ -46,6 +46,6 @@
   },
   "dependencies": {
     "moment": "^2.24.0",
-    "v-calendar": "1.0.0-beta.16"
+    "v-calendar": "1.0.0-beta.22"
   }
 }

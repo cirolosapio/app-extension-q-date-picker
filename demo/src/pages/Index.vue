@@ -64,29 +64,27 @@
 
 <script>
 import languages from 'quasar/lang/index.json'
-import { QCheckbox, QSeparator, QSelect, QBadge } from 'quasar'
 export default {
   name: 'PageIndex',
-  components: { QCheckbox, QSeparator, QSelect, QBadge },
   data () {
     return {
       date: {},
       colorsOptions: {
-        color: 'primary',
+        color: 'blue',
         previousColor: 'amber',
         toggleColor: 'teal'
       },
       locale: this.$q.lang.isoName,
       langOptions: [],
       noCompare: false,
-      colors: [ 'primary', 'secondary', 'accent', 'red', 'green', 'teal', 'positive', 'negative', 'info', 'warning' ]
+      colors: [ 'blue', 'purple', 'red', 'green', 'teal', 'orange', 'indigo' ]
     }
   },
 
   created () {
     this.langOptions = languages.map(({ isoName, nativeName }) => ({
       label: nativeName, value: isoName, disable: !['it', 'en-us'].includes(isoName)
-    }))
+    })).sort((a, b) => a.label > b.label)
   },
 
   watch: {

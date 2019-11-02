@@ -19,26 +19,27 @@
         </div>
       </q-item-section>
 
-      <q-menu cover anchor="top right" :offset="[70, 0]" transition-show="jump-left" transition-hide="jump-right" max-height="1000px"
+      <q-popup-proxy maximized cover anchor="top right" transition-show="jump-left" transition-hide="jump-right" max-height="1000px"
         ref="menu" :persistent="choise === 'custom' || comparing">
-        <div class="row" :style="{ minWidth }">
-          <div class="col-5">
-            <q-list padding class="custom-list" style="transition: width .3s, height .3s">
-              <q-tabs no-caps dense v-model="choise" vertical switch-indicator :indicator-color="color" active-bg-color="grey-2">
+        <div class="column no-wrap justify-between">
+          <div class="row">
+            <div class="col-5">
+              <q-list padding class="custom-list" style="transition: width .3s, height .3s">
+                <q-tabs no-caps dense v-model="choise" vertical switch-indicator :indicator-color="color" :active-bg-color="activeBgColor">
                 <q-tab name="custom" :label="$q.lang.custom" />
                 <q-separator spaced />
                 <q-tab :name="value" :label="$q.lang[value]" v-for="{ value } in periods" :key="value" />
               </q-tabs>
               <q-separator spaced />
-              <q-item class="q-pl-none q-py-none q-my-xs" style="min-height: 20px" clickable @click="choise = 'x_days_to_today'" :class="{ 'bg-grey-2': choise === 'x_days_to_today' }">
-                <q-separator vertical :color="choise === 'x_days_to_today' ? color : 'white'" style="width: 2px"/>
+              <q-item class="q-pl-none q-py-none q-my-xs" style="min-height: 20px" clickable @click="choise = 'x_days_to_today'" :class="{ [activeBgColor]: choise === 'x_days_to_today' }">
+                <q-separator vertical :color="choise === 'x_days_to_today' ? color : bg" style="width: 2px"/>
                 <div class="flex items-baseline q-gutter-x-sm q-pl-md q-py-xs">
                   <q-input v-model="days_to_today" dense style="max-width: 30px" @click.stop="$refs.days_to_today.focus()" ref="days_to_today" />
                   <q-item-label>{{$q.lang.daysToToday}}</q-item-label>
                 </div>
               </q-item>
               <q-item class="q-pl-none q-py-none q-my-xs" style="min-height: 20px" clickable @click="choise = 'x_days_to_yesterday'" :class="{ 'bg-grey-2': choise === 'x_days_to_yesterday' }">
-                <q-separator vertical :color="choise === 'x_days_to_yesterday' ? color : 'white'" style="width: 2px"/>
+                <q-separator vertical :color="choise === 'x_days_to_yesterday' ? color : bg" style="width: 2px"/>
                 <div class="flex items-baseline q-gutter-x-sm q-pl-md q-py-xs">
                   <q-input v-model="days_to_yesterday" dense style="max-width: 30px" @click.stop="$refs.days_to_yesterday.focus()" ref="days_to_yesterday" />
                   <q-item-label>{{$q.lang.daysToYesterday}}</q-item-label>
@@ -59,73 +60,74 @@
                 <q-tabs no-caps dense v-model="compare_choise" vertical switch-indicator :indicator-color="color" v-if="comparing">
                   <q-tab name="previous_period" :label="displayComparingValue" />
                   <q-tab name="previous_year" :label="$q.lang.last_year" />
-                  <q-tab name="custom" :label="$q.lang.custom" />
-                </q-tabs>
-              </template>
+                    <q-tab name="custom" :label="$q.lang.custom" />
+                  </q-tabs>
+                </template>
 
-              <q-resize-observer @resize="onResize" :debounce="0" />
-            </q-list>
-          </div>
-
-          <q-separator vertical />
-
-          <div class="col">
-            <div class="row no-wrap items-baseline justify-center q-px-sm q-pt-sm q-gutter-x-sm">
-              <div class="col">
-                <q-input v-model="start" :color="color" dense type="date" style="min-width: 110px" :rules="[ val => maxEnd(val, end) ]" no-error-icon hide-bottom-space ref="input" />
-              </div>
-              <q-icon name="mdi-minus" />
-              <div class="col">
-                <q-input v-model="end" :color="color" dense type="date" style="min-width: 110px" :rules="[ val => minStart(val, start) ]" no-error-icon hide-bottom-space ref="input" />
-              </div>
+                <q-resize-observer @resize="onResize" :debounce="0" />
+              </q-list>
             </div>
-            <template v-if="comparing">
-              <q-item-label caption class="q-pt-sm q-pl-md">{{$q.lang.compare}}</q-item-label>
-              <div class="row no-wrap items-baseline justify-center q-px-sm q-gutter-x-sm">
+
+            <q-separator vertical />
+
+            <div class="col">
+              <div class="row no-wrap items-baseline justify-center q-px-sm q-pt-sm q-gutter-x-sm">
                 <div class="col">
-                  <q-input v-model="previous_start" :color="previousColor" dense type="date" :rules="[ val => maxEnd(val, previous_end) ]" no-error-icon hide-bottom-space ref="input" />
+                  <q-input v-model="start" :color="color" dense type="date" style="min-width: 110px" :rules="[ val => maxEnd(val, end) ]" no-error-icon hide-bottom-space ref="input" />
                 </div>
                 <q-icon name="mdi-minus" />
                 <div class="col">
-                  <q-input v-model="previous_end" :color="previousColor" dense type="date" :rules="[ val => minStart(val, previous_start) ]" no-error-icon hide-bottom-space ref="input" />
+                  <q-input v-model="end" :color="color" dense type="date" style="min-width: 110px" :rules="[ val => minStart(val, start) ]" no-error-icon hide-bottom-space ref="input" />
                 </div>
               </div>
-            </template>
+              <template v-if="comparing">
+                <q-item-label caption class="q-pt-sm q-pl-md">{{$q.lang.compare}}</q-item-label>
+                <div class="row no-wrap items-baseline justify-center q-px-sm q-gutter-x-sm">
+                  <div class="col">
+                    <q-input v-model="previous_start" :color="previousColor" dense type="date" :rules="[ val => maxEnd(val, previous_end) ]" no-error-icon hide-bottom-space ref="input" />
+                  </div>
+                  <q-icon name="mdi-minus" />
+                  <div class="col">
+                    <q-input v-model="previous_end" :color="previousColor" dense type="date" :rules="[ val => minStart(val, previous_start) ]" no-error-icon hide-bottom-space ref="input" />
+                  </div>
+                </div>
+              </template>
 
-            <q-separator class="q-mt-sm" />
+              <q-separator class="q-mt-sm" />
 
-            <div style="overflow-y: auto; overflow-x: hidden" :style="calendarHeight">
-              <v-date-picker mode="range" v-model="selectedDate" title-position="left" :rows="2" is-inline :attributes="attrs"
-                is-expanded style="border-width: 0px">
-                <template #header="{ title }">
-                  <div class="vc-header vc-text-gray-900">
-                    <div class="vc-title-layout align-left">
+              <div style="overflow-y: auto; overflow-x: hidden" :style="calendarHeight">
+                <v-date-picker :color="color" :is-dark="$q.dark.isActive" mode="range" v-model="selectedDate" title-position="left" :rows="2" is-inline :attributes="attrs"
+                  is-expanded style="border-width: 0px">
+                  <template #header="{ title }">
+                    <div class="vc-header vc-text-gray-900">
+                      <div class="vc-title-layout align-left">
                         <div class="vc-title-wrapper">
                           <div class="vc-text-lg vc-text-gray-800 vc-font-semibold">{{title}}</div>
                         </div>
+                      </div>
                     </div>
-                  </div>
-                </template>
-                <template #header-left-button>
-                  <q-btn dense round flat icon="keyboard_arrow_left" />
-                </template>
-                <template #header-right-button>
-                  <q-btn dense round flat icon="keyboard_arrow_right" />
-                </template>
-              </v-date-picker>
+                  </template>
+                  <template #header-left-button>
+                    <q-btn dense round flat icon="keyboard_arrow_left" />
+                  </template>
+                  <template #header-right-button>
+                    <q-btn dense round flat icon="keyboard_arrow_right" />
+                  </template>
+                </v-date-picker>
+              </div>
             </div>
           </div>
+
+          <div class="colum" v-if="['custom', 'x_days_to_today', 'x_days_to_yesterday'].includes(choise) || comparing">
+            <q-separator  />
+
+            <q-card-actions align="right">
+              <q-btn no-caps flat :label="$q.lang.label.cancel" color="grey" @click="$refs.menu.hide()" />
+              <q-btn no-caps flat :label="$q.lang.label.set" :color="color" @click="ok(), $refs.menu.hide()" />
+            </q-card-actions>
+          </div>
         </div>
-
-        <template v-if="['custom', 'x_days_to_today', 'x_days_to_yesterday'].includes(choise) || comparing">
-          <q-separator  />
-
-          <q-card-actions align="right">
-            <q-btn no-caps flat :label="$q.lang.label.cancel" color="grey" @click="$refs.menu.hide()" />
-            <q-btn no-caps flat :label="$q.lang.label.set" :color="color" @click="ok(), $refs.menu.hide()" />
-          </q-card-actions>
-        </template>
-      </q-menu>
+      </q-popup-proxy>
     </q-item>
 
     <q-item-label class="float-right" caption v-if="comparing">
@@ -135,15 +137,13 @@
 </template>
 
 <script>
-import { QMenu, QTabs, QTab, QSeparator, QInput, QToggle, QCardActions, QResizeObserver } from 'quasar'
+import { colors } from 'quasar'
 import * as m from 'moment'
 export default {
   name: 'QDateFilter',
-  components: { QMenu, QTabs, QTab, QSeparator, QInput, QToggle, QCardActions, QResizeObserver },
   props: {
     locale: {
       type: String,
-      default: () => 'en-us',
       required: true
     },
     value: {
@@ -153,10 +153,6 @@ export default {
     noCompare: {
       type: Boolean,
       default: () => false
-    },
-    minWidth: {
-      type: String,
-      default: () => '450px'
     },
     maxYears: {
       type: Number,
@@ -178,7 +174,9 @@ export default {
 
   created () {
     import(`../lang/${this.locale}`).then(({ default: { qDateFilter } }) => {
-      Object.assign(this.$q.lang, qDateFilter)
+      Object.entries(qDateFilter).forEach(([key, value]) => {
+        this.$set(this.$q.lang, key, value)
+      })
     })
     if (this.locale !== 'en-us') import(`moment/locale/${this.locale}`)
 
@@ -239,9 +237,10 @@ export default {
   watch: {
     locale (lang) {
       import(`../lang/${lang}`).then(({ default: { qDateFilter } }) => {
-        Object.assign(this.$q.lang, qDateFilter)
+        Object.entries(qDateFilter).forEach(([key, value]) => {
+          this.$set(this.$q.lang, key, value)
+        })
       })
-      if (lang !== 'en-us') import(`moment/locale/${this.lang}`)
     },
     choise (choise) {
       if (choise !== 'custom') this.lastChoise = choise
@@ -347,14 +346,21 @@ export default {
     },
     onResize () {
       let height = 30 * (this.periods.length) + 142
+      height += this.$q.screen.xs ? 108 : 0
       height += this.comparing ? 38 : 0
-      height += this.noCompare ? -45 : 0
+      height += this.noCompare ? (this.$q.screen.xs ? -16 : -45) : 0
       height += 'px'
       this.calendarHeight = { height }
     }
   },
 
   computed: {
+    activeBgColor () {
+      return this.$q.dark.isActive ? 'grey-9' : 'grey-2'
+    },
+    bg () {
+      return this.$q.dark.isActive ? 'dark' : 'white'
+    },
     selectedDate: {
       get () {
         if (this.choise !== 'custom' && !this.comparing) this.ok()
@@ -388,7 +394,7 @@ export default {
       return (this.comparing && m(this.start).isValid() && m(this.end).isValid()) ? [
         {
           key: 'previousDate',
-          highlight: 'yellow',
+          highlight: this.previousColor,
           dates: [this.previousDate]
         }
       ] : []
@@ -481,7 +487,7 @@ export default {
       margin-left 0
   .hover-black
     &:hover
-      color black !important
+      color $primary !important
   .q-pl-xs-important
     padding-left 4px !important
   .q-pr-sm-important

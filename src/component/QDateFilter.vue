@@ -19,7 +19,7 @@
         </div>
       </q-item-section>
 
-      <q-popup-proxy maximized cover anchor="top right" :transition-show="transitionShow" :transition-hide="transitionHide" max-height="1000px"
+      <q-popup-proxy maximized cover :anchor="anchor" :transition-show="transitionShow" :transition-hide="transitionHide" max-height="1000px"
         ref="menu" :persistent="choise === 'custom' || comparing">
         <div class="column no-wrap justify-between">
           <div class="row">
@@ -165,6 +165,10 @@ export default {
     transitionHide: {
       type: String,
       default: () => 'jump-right'
+    },
+    anchor: {
+      type: String,
+      default: () => 'top right'
     },
     color: {
       type: String,

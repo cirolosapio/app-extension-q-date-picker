@@ -64,6 +64,13 @@
       "default": "jump-right",
       "examples": [ "fade", "slide-down" ],
       "category": "behavior"
+    },
+
+    "anchor": {
+      "desc": "Two values setting the starting position or anchor point of the menu relative to its target",
+      "default": "top right",
+      "examples": [ "top left", "bottom right" ],
+      "category": "position"
     }
   },
   "events": {

@@ -111,8 +111,13 @@ export default {
       leftDrawerOpen: this.$q.platform.is.desktop
     }
   },
+
   methods: {
     openURL
+  },
+
+  created () {
+    this.$q.dark.set('auto')
   }
 }
 </script>

@@ -5,5 +5,5 @@ _redirects
 .editorconfig
 .eslintrc.js
 .eslintignore
-yarn.lock
 package-lock.json
+/src/component/QDateFilter.json

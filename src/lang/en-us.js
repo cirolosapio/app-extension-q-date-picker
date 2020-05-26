@@ -16,7 +16,6 @@ export default {
     this_month: 'This month',
     last_30_days: 'Last 30 days',
     last_month: 'Last month',
-    this_quarter: 'This quarter',
     last_90_days: 'last 90 days',
     this_quarter: 'This quarter',
     last_quarter: 'Last quarter',

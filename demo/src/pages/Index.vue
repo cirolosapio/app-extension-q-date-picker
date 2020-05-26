@@ -4,10 +4,10 @@
       <q-item-label header>Model</q-item-label>
       <q-item v-for="(prop, key) in date" :key="key">
         <q-item-section>
-          <q-item-label>{{key}}</q-item-label>
+          <q-item-label>{{ key }}</q-item-label>
         </q-item-section>
         <q-item-section>
-          <q-item-label overline>{{prop}}</q-item-label>
+          <q-item-label overline>{{ prop }}</q-item-label>
         </q-item-section>
       </q-item>
       <q-separator spaced />
@@ -17,19 +17,19 @@
           <q-item-label>locale</q-item-label>
         </q-item-section>
         <q-item-section>
-          <q-select standout v-model="config.locale" :options="langOptions" dense emit-value map-options options-dense />
+          <q-select standout :options="langOptions" dense emit-value map-options options-dense v-model="config.locale" />
         </q-item-section>
       </q-item>
       <q-item v-for="(value, param) in colorsOptions" :key="`param-${param}`">
         <q-item-section>
-          <q-item-label>{{param}}</q-item-label>
+          <q-item-label>{{ param }}</q-item-label>
         </q-item-section>
         <q-item-section>
-          <q-select standout :options="colors" emit-value v-model="colorsOptions[param]" dense options-dense>
+          <q-select standout :options="colors" emit-value dense options-dense v-model="colorsOptions[param]">
             <template #option="{ opt, itemProps, itemEvents }">
-              <q-item v-bind="itemProps" v-on="itemEvents" >
+              <q-item v-bind="itemProps" v-on="itemEvents">
                 <q-item-section>
-                  <q-item-label>{{opt}}</q-item-label>
+                  <q-item-label>{{ opt }}</q-item-label>
                 </q-item-section>
                 <q-item-section avatar>
                   <q-badge :color="opt" />
@@ -65,10 +65,7 @@
       </q-item>
     </q-list>
 
-    <q-date-filter
-      v-model="date"
-      class="float-right"
-      v-bind="{ ...config, ...colorsOptions }" />
+    <q-date-filter class="float-right" v-bind="{ ...config, ...colorsOptions }" v-model="date" />
   </q-page>
 </template>
 
@@ -78,7 +75,7 @@
 <script>
 import languages from 'quasar/lang/index.json'
 export default {
-  name: 'PageIndex',
+  name: 'Index',
   data () {
     return {
       date: {},
@@ -96,7 +93,7 @@ export default {
       },
 
       langOptions: [],
-      colors: [ 'blue', 'purple', 'red', 'green', 'teal', 'orange', 'indigo', 'yellow', 'pink' ]
+      colors: ['blue', 'purple', 'red', 'green', 'teal', 'orange', 'indigo', 'yellow', 'pink']
     }
   },
 

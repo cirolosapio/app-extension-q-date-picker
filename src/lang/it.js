@@ -17,7 +17,6 @@ export default {
     this_month: 'Questo mese',
     last_30_days: 'Ultimi 30 giorni',
     last_month: 'Mese scorso',
-    this_quarter: 'Questo trimestre',
     last_90_days: 'Ultimi 90 giorni',
     this_quarter: 'Questo trimestre',
     last_quarter: 'Trimestre scorso',

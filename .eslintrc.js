@@ -28,7 +28,6 @@ module.exports = {
 
     'standard',
 
-
     'plugin:quasar/standard'
   ],
 

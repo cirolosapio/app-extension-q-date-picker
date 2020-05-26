@@ -1,17 +1,14 @@
 {
   "name": "quasar-app-extension-q-date-filter",
-  "version": "v0.0.15",
+  "version": "v0.0.16",
   "description": "QDateFilter - Quasar App Extension",
-  "author": "lscorion <lscorionjs@gmail.com>",
+  "author": "heartbeatLV <lscorionjs@gmail.com>",
   "license": "MIT",
   "main": "src/index.js",
   "scripts": {
-    "lint": "eslint --ext .js,.vue src",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore ./",
     "lint-fix": "eslint --ext .js,.vue src --fix",
-    "build-demo": "cd ./demo && yarn build && cd .. && cp ./_redirects ./demo/dist/spa && rm -r -f ./docs && cp -r ./demo/dist/spa/. ./docs",
-    "test": "echo \"No test specified\" && exit 0",
-    "git": "git push git master",
-    "publish": "npm publish"
+    "build-demo": "cd ./demo && yarn build && cd .. && cp ./_redirects ./demo/dist/spa && rm -r -f ./docs && cp -r ./demo/dist/spa/. ./docs"
   },
   "publishConfig": {
     "access": "public"
@@ -33,19 +30,27 @@
     "qdatefilter"
   ],
   "engines": {
-    "node": ">= 8.9.0",
-    "npm": ">= 5.6.0",
-    "yarn": ">= 1.6.0"
+    "node": ">= 10.18.1",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
   },
   "devDependencies": {
-    "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.1",
-    "eslint": "^5.10.0",
-    "eslint-loader": "^2.1.1",
-    "eslint-plugin-vue": "^5.0.0"
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-loader": "^3.0.3",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-quasar": "^1.0.0",
+    "eslint-plugin-standard": "^4.0.0",
+    "eslint-plugin-vue": "^6.1.2"
   },
   "dependencies": {
-    "moment": "^2.24.0",
-    "v-calendar": "1.0.0-beta.22"
+    "moment": "^2.26.0",
+    "v-calendar": "1.0.6"
+  },
+  "resolutions": {
+    "@babel/parser": "7.7.5"
   }
 }

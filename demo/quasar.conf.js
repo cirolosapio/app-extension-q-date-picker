@@ -24,6 +24,7 @@ module.exports = configure(function (ctx) {
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
+      // 'material-icons'
       // 'ionicons-v4',
       // 'fontawesome-v5',
       // 'eva-icons',
@@ -34,13 +35,12 @@ module.exports = configure(function (ctx) {
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
       'roboto-font', // optional, you are not bound to it
-      'material-icons', // optional, you are not bound to it
-      'mdi-v4'
+      'mdi-v5'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
     framework: {
-      iconSet: 'material-icons', // Quasar icon set
+      iconSet: 'svg-mdi-v5', // Quasar icon set
       // lang: 'it', // Quasar language pack
 
       // Possible values for "all":
@@ -72,6 +72,7 @@ module.exports = configure(function (ctx) {
       publicPath: 'app-extension-q-date-filter',
       // rtl: false, // https://quasar.dev/options/rtl-support
       showProgress: ctx.dev,
+      modern: true,
       gzip: true,
       analyze: false,
 
@@ -85,10 +86,7 @@ module.exports = configure(function (ctx) {
           enforce: 'pre',
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
-          exclude: /node_modules/,
-          options: {
-            formatter: require('eslint').CLIEngine.getFormatter('stylish')
-          }
+          exclude: /node_modules/
         })
       }
     },
@@ -97,13 +95,13 @@ module.exports = configure(function (ctx) {
     devServer: {
       // https: true,
       // port: 8080,
-      open: true, // opens browser window automatically
-      watchOptions: {
-        ignored: [
-          'node_modules',
-          '!node_modules/quasar-app-extension-q-date-filter/src'
-        ]
-      }
+      open: true // opens browser window automatically
+      // watchOptions: {
+      //   ignored: [
+      //     'node_modules',
+      //     '!node_modules/quasar-app-extension-q-date-filter/src'
+      //   ]
+      // }
     },
 
     // animations: 'all', // --- includes all animations

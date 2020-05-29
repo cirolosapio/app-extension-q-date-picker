@@ -1,19 +1,25 @@
 <template>
   <div>
     <q-item dense class="cursor-pointer custom-button">
-      <q-item-section side v-if="getChoiseFromDate">
-        <q-item-label caption>{{ getChoiseFromDate.label }}</q-item-label>
-      </q-item-section>
-      <q-item-section>
-        <q-item-label>{{ displayDate }}</q-item-label>
+      <template v-if="start || end">
+        <q-item-section side v-if="getChoiseFromDate">
+          <q-item-label caption>{{ getChoiseFromDate.label }}</q-item-label>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>{{ displayDate }}</q-item-label>
+        </q-item-section>
+      </template>
+      <q-item-section v-else>
+        <q-item-label caption>Select a date</q-item-label>
       </q-item-section>
       <q-item-section side>
         <q-icon :name="icons.mdiMenuDown" />
       </q-item-section>
-      <q-item-section side>
+      <q-item-section side v-if="start || end">
         <div class="items-center">
           <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiChevronLeft" @click.stop="prev()" />
           <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiChevronRight" @click.stop="next()" />
+          <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiCloseCircle" v-if="clearable" @click.stop="clear()" />
         </div>
       </q-item-section>
 
@@ -104,7 +110,7 @@
 </template>
 
 <script>
-import { mdiChevronLeft, mdiChevronRight, mdiMenuDown, mdiMinus } from '@quasar/extras/mdi-v5'
+import { mdiChevronLeft, mdiChevronRight, mdiMenuDown, mdiMinus, mdiCloseCircle } from '@quasar/extras/mdi-v5'
 import { startOfDate, endOfDate, deepEqual } from '../utils'
 import { date } from 'quasar'
 export default {
@@ -119,6 +125,7 @@ export default {
       })
     },
     compare: Boolean,
+    clearable: Boolean,
     periods: {
       type: Array,
       required: true
@@ -155,7 +162,8 @@ export default {
         mdiChevronLeft,
         mdiChevronRight,
         mdiMenuDown,
-        mdiMinus
+        mdiMinus,
+        mdiCloseCircle
       },
 
       start: null,
@@ -332,6 +340,13 @@ export default {
         this.prev_start = date.formatDate(date.subtractFromDate(this.prev_start, diff), this.dateFormat)
         this.prev_end = date.formatDate(date.subtractFromDate(this.prev_end, diff), this.dateFormat)
       }
+      this.emitInput()
+    },
+    clear () {
+      this.start = null
+      this.end = null
+      this.prev_start = null
+      this.prev_end = null
       this.emitInput()
     },
     updateChoises () {

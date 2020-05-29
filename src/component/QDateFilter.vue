@@ -27,7 +27,7 @@
         <q-card-section horizontal>
           <q-card-section class="q-pa-none" style="min-width: 150px">
             <q-list padding class="custom-tabs">
-              <q-tabs v-bind="tabsProps" :indicator-color="color" v-model="choise">
+              <q-tabs v-bind="tabsProps(color)" v-model="choise">
                 <q-tab label="Custom" name="custom" />
                 <q-separator spaced />
                 <q-tab :label="label" :name="value" v-for="{ value, label } in dates" :key="value" />
@@ -44,7 +44,7 @@
                     <q-toggle dense :color="toggleColor" v-model="comparing" />
                   </q-item-section>
                 </q-item>
-                <q-tabs v-bind="tabsProps" :indicator-color="prevColor" v-if="comparing" v-model="compare_choise">
+                <q-tabs v-bind="tabsProps(prevColor)" v-if="comparing" v-model="compare_choise">
                   <q-tab name="prev_period" :label="getCompareChoiseFromDate ? getCompareChoiseFromDate.label : 'Previous period'" /> <!-- TODO: lang -->
                   <q-tab name="prev_year" :label="'Last Year'" /> <!-- TODO: lang -->
                   <q-tab name="custom" :label="'Custom'" /> <!-- TODO: lang -->
@@ -56,32 +56,34 @@
           <q-separator vertical />
 
           <q-card-section class="q-pa-none">
-            <q-item dense class="q-px-xs custom-input">
-              <q-item-section side>
-                <q-input v-bind="inputProps(maxEnd, end)" :color="color" v-model="start" />
-              </q-item-section>
-              <q-item-section>
-                <q-icon :name="icons.mdiMinus" />
-              </q-item-section>
-              <q-item-section side>
-                <q-input v-bind="inputProps(minStart, start)" :color="color" v-model="end" />
-              </q-item-section>
-            </q-item>
-
-            <template v-if="comparing">
-              <q-item-label caption class="q-pt-sm q-pl-md">Compare</q-item-label> <!-- TODO: lang -->
+            <q-list>
               <q-item dense class="q-px-xs custom-input">
                 <q-item-section side>
-                  <q-input v-bind="inputProps(maxEnd, prev_end)" :color="color" v-model="prev_start" />
+                  <q-input v-bind="inputProps(maxEnd, end)" :color="color" v-model="start" />
                 </q-item-section>
                 <q-item-section>
                   <q-icon :name="icons.mdiMinus" />
                 </q-item-section>
                 <q-item-section side>
-                  <q-input v-bind="inputProps(minStart, prev_start)" :color="color" v-model="prev_end" />
+                  <q-input v-bind="inputProps(minStart, start)" :color="color" v-model="end" />
                 </q-item-section>
               </q-item>
-            </template>
+
+              <template v-if="comparing">
+                <q-item-label caption class="q-pt-sm q-pl-md" :class="{ 'text-white': $q.dark.isActive }">Compare</q-item-label> <!-- TODO: lang -->
+                <q-item dense class="q-px-xs custom-input">
+                  <q-item-section side>
+                    <q-input v-bind="inputProps(maxEnd, prev_end)" :color="color" v-model="prev_start" />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-icon :name="icons.mdiMinus" />
+                  </q-item-section>
+                  <q-item-section side>
+                    <q-input v-bind="inputProps(minStart, prev_start)" :color="color" v-model="prev_end" />
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-list>
 
             <q-separator class="q-mb-xs" />
 
@@ -186,12 +188,14 @@ export default {
       }
     },
     tabsProps () {
-      return {
+      return color => ({
         vertical: true,
         switchIndicator: true,
         noCaps: true,
-        activeBgColor: this.$q.dark.isActive ? 'grey-9' : 'grey-2'
-      }
+        indicatorColor: color,
+        activeBgColor: this.$q.dark.isActive ? 'grey-10' : color + '-1',
+        activeColor: this.$q.dark.isActive ? color : color
+      })
     },
     inputProps () {
       return (rule, key) => ({

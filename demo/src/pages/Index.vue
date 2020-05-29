@@ -128,7 +128,7 @@ export default {
       clearable: false,
       colorsOptions: {
         color: 'blue',
-        previousColor: 'orange',
+        prevColor: 'orange',
         toggleColor: 'teal'
       },
 

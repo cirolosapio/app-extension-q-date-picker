@@ -22,7 +22,7 @@
             <q-item-label>Quasar Language</q-item-label>
           </q-item-section>
           <q-item-section>
-            <q-select standout :options="langOptions" dense emit-value map-options options-dense v-model="locale" />
+            <q-select standout :options="langOptions" dense emit-value map-options options-dense :hint="`First day of week: ${$q.lang.date.firstDayOfWeek}`" v-model="locale" />
           </q-item-section>
         </q-item>
         <q-item v-for="(value, param) in colorsOptions" :key="`param-${param}`">
@@ -62,10 +62,15 @@
         </q-item>
 
         <q-separator spaced />
-        <!-- popup edit -->
+
         <q-item-label header>Periods</q-item-label>
         <q-markup-table dense>
           <thead>
+            <tr>
+              <td class="text-caption text-left" :class="$q.dark.isActive ? 'text-grey' : 'text-grey-10'" colspan="4">
+                By clicking on the <b>Period</b> column you can change the label
+              </td>
+            </tr>
             <tr>
               <th class="text-center">
                 <q-checkbox dense :value="toggleAllValue" @input="toggleAll" />
@@ -76,11 +81,16 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="{ label, value, prev, ...rest } in examples" :key="value">
+            <tr v-for="({ label, value, prev, ...rest }, idx) in examples" :key="value">
               <td class="text-center">
                 <q-checkbox dense :val="value" v-model="filter" />
               </td>
-              <td class="text-left">{{ label }}</td>
+              <td class="text-left cursor-pointer">
+                {{ label }}
+                <q-popup-edit v-model="examples[idx].label">
+                  <q-input dense autofocus v-model="examples[idx].label" />
+                </q-popup-edit>
+              </td>
               <td class="text-left text-caption">{{ rest }}</td>
               <td class="text-left text-caption">{{ prev }}</td>
             </tr>

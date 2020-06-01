@@ -23,7 +23,7 @@
         </div>
       </q-item-section>
 
-      <q-popup-proxy v-bind="popupProps">
+      <q-popup-proxy v-bind="popupProps" @before-show="resetModel">
         <q-card-section horizontal>
           <q-card-section class="q-pa-none" style="min-width: 150px">
             <q-list padding class="custom-tabs">
@@ -59,13 +59,13 @@
             <q-list>
               <q-item dense class="q-px-xs custom-input">
                 <q-item-section side>
-                  <q-input v-bind="inputProps(maxEnd, end)" :color="color" v-model="start" />
+                  <q-input v-bind="inputProps" :max="end" :color="color" v-model="start" />
                 </q-item-section>
                 <q-item-section>
                   <q-icon :name="icons.mdiMinus" />
                 </q-item-section>
                 <q-item-section side>
-                  <q-input v-bind="inputProps(minStart, start)" :color="color" v-model="end" />
+                  <q-input v-bind="inputProps" :min="start" :color="color" v-model="end" />
                 </q-item-section>
               </q-item>
 
@@ -73,22 +73,22 @@
                 <q-item-label caption class="q-pt-sm q-pl-md" :class="{ 'text-white': $q.dark.isActive }">Compare</q-item-label> <!-- TODO: lang -->
                 <q-item dense class="q-px-xs custom-input">
                   <q-item-section side>
-                    <q-input v-bind="inputProps(maxEnd, prev_end)" :color="color" v-model="prev_start" />
+                    <q-input v-bind="inputProps" :max="prev_end" :color="color" v-model="prev_start" @input="updatePrevChoises" />
                   </q-item-section>
                   <q-item-section>
                     <q-icon :name="icons.mdiMinus" />
                   </q-item-section>
                   <q-item-section side>
-                    <q-input v-bind="inputProps(minStart, prev_start)" :color="color" v-model="prev_end" />
+                    <q-input v-bind="inputProps" :min="prev_start" :color="color" v-model="prev_end" @change="updatePrevChoises" />
                   </q-item-section>
                 </q-item>
               </template>
             </q-list>
 
-            <q-separator class="q-mb-xs" />
+            <q-separator />
 
             <div>
-              Calendar
+              <date-picker v-bind="datePickerProps" v-model="selectedDate" />
             </div>
           </q-card-section>
         </q-card-section>
@@ -97,14 +97,14 @@
           <q-separator />
 
           <q-card-actions align="right">
-            <q-btn no-caps flat :label="$q.lang.label.cancel" color="grey" @click="$refs.menu.hide()" />
-            <q-btn no-caps flat :label="$q.lang.label.set" :color="color" @click="emitInput(), $refs.menu.hide()" />
+            <q-btn no-caps flat :label="$q.lang.label.cancel" color="grey" @click="cancel()" />
+            <q-btn no-caps flat :label="$q.lang.label.set" :color="color" @click="emitInput()" />
           </q-card-actions>
         </template>
       </q-popup-proxy>
     </q-item>
 
-    <q-item-label class="float-right" caption v-if="comparing">
+    <q-item-label class="float-right" caption v-if="comparing && (prev_start || prev_end)">
       <!-- TODO: lang -->
       Compare to: {{ displayPrevDate }}
     </q-item-label>
@@ -114,10 +114,15 @@
 <script>
 import { mdiChevronLeft, mdiChevronRight, mdiMenuDown, mdiMinus, mdiCloseCircle } from '@quasar/extras/mdi-v5'
 import { startOfDate, endOfDate, deepEqual } from '../utils'
+import { DatePicker } from 'v-calendar'
 import { date } from 'quasar'
 export default {
   name: 'QDateFilter',
   props: {
+    value: {
+      type: Object,
+      required: true
+    },
     menuProps: {
       type: Object,
       default: () => ({
@@ -153,11 +158,12 @@ export default {
       default: () => 'teal'
     }
   },
+  components: { DatePicker },
 
   data () {
     return {
       choise: 'custom',
-      compare_choise: 'custom',
+      compare_choise: 'prev_period',
       comparing: false,
 
       icons: {
@@ -176,7 +182,46 @@ export default {
   },
 
   computed: {
+    // date-picker models
+    selectedDate: {
+      get () {
+        const start = this.start ? date.extractDate(this.start, this.dateFormat) : null
+        const end = this.end ? date.extractDate(this.end, this.dateFormat) : null
+        return { start, end }
+      },
+      set ({ start, end }) {
+        this.start = date.formatDate(start, this.dateFormat)
+        this.end = date.formatDate(end, this.dateFormat)
+      }
+    },
+    selectedPrevDate () {
+      return (this.comparing && this.start && this.end && this.prev_start && this.prev_end) ? [
+        {
+          key: 'prevDate',
+          highlight: this.prevColor,
+          dates: [{
+            start: date.extractDate(this.prev_start, this.dateFormat),
+            end: date.extractDate(this.prev_end, this.dateFormat)
+          }]
+        }
+      ] : []
+    },
+
     // configs
+    datePickerProps () {
+      return {
+        ref: 'datePicker',
+        mode: 'range',
+        titlePosition: 'left',
+        rows: this.dates.length >= 9 ? 2 : 1,
+        isInline: true,
+        isExpanded: true,
+        color: this.color,
+        locale: this.$q.lang.isoName,
+        firstDayOfWeek: this.$q.lang.date.firstDayOfWeek + 1,
+        attributes: this.selectedPrevDate
+      }
+    },
     popupProps () {
       return {
         ref: 'menu',
@@ -198,14 +243,13 @@ export default {
       })
     },
     inputProps () {
-      return (rule, key) => ({
+      return {
         dense: true,
         borderless: true,
         noErrorIcon: true,
         hideBottomSpace: true,
-        type: 'date',
-        rules: [val => rule(val, key)]
-      })
+        type: 'date'
+      }
     },
 
     // getters
@@ -216,8 +260,8 @@ export default {
         start = date.addToDate(today, start)
         end = date.addToDate(today, end)
 
-        if (startOf) start = startOfDate(start, startOf)
-        if (endOf) end = endOfDate(end, endOf)
+        if (startOf) start = startOfDate(start, startOf, this.$q.lang.date.firstDayOfWeek)
+        if (endOf) end = endOfDate(end, endOf, this.$q.lang.date.firstDayOfWeek)
 
         return { ...rest, start, end }
       })
@@ -261,22 +305,16 @@ export default {
       return this.getDateFromChoise ? this.getDateFromChoise.prev : { days: -this.getDayDiff - 1 }
     },
 
-    // rules
-    minStart () {
-      return (val, start) => start ? val >= start : true
-    },
-    maxEnd () {
-      return (val, end) => end ? val <= end : true
-    },
-
     // display values
     displayDate () {
+      if (!this.start || !this.end) return null
       if (this.start === this.end) return date.formatDate(this.start, this.displayFormat)
       else if (date.isSameDate(this.start, this.end, 'month')) return `${date.formatDate(this.start, 'D')} - ${date.formatDate(this.end, this.displayFormat)}`
       else if (date.isSameDate(this.start, this.end, 'year')) return `${date.formatDate(this.start, 'D MMM')} - ${date.formatDate(this.end, this.displayFormat)}`
       else return `${date.formatDate(this.start, this.displayFormat)} - ${date.formatDate(this.end, this.displayFormat)}`
     },
     displayPrevDate () {
+      if (!this.prev_start || !this.prev_end) return null
       if (this.prev_start === this.prev_end) return date.formatDate(this.prev_start, this.displayFormat)
       else if (date.isSameDate(this.prev_start, this.prev_end, 'month')) return `${date.formatDate(this.prev_start, 'D')} - ${date.formatDate(this.prev_end, this.displayFormat)}`
       else if (date.isSameDate(this.prev_start, this.prev_end, 'year')) return `${date.formatDate(this.prev_start, 'D MMM')} - ${date.formatDate(this.prev_end, this.displayFormat)}`
@@ -298,34 +336,30 @@ export default {
       }
       if (!this.comparing && choise !== 'custom') this.emitInput()
     },
-    compare_choise () {
-      if (this.compare_choise === 'prev_period') {
-        if (this.prev_dates.findIndex(({ value }) => value === this.choise) !== -1) {
-          const { start, end } = this.prev_dates.find(({ value }) => value === this.choise)
-          this.prev_start = date.formatDate(start, this.dateFormat)
-          this.prev_end = date.formatDate(end, this.dateFormat)
-        } else {
-          // se non è uno dei periodi rifletto a specchio
-          const end = date.subtractFromDate(this.start, { days: 1 }),
-            start = date.subtractFromDate(this.start, { days: this.getDayDiff + 1 })
-          this.prev_start = date.formatDate(start, this.dateFormat)
-          this.prev_end = date.formatDate(end, this.dateFormat)
-        }
-      } else if (this.compare_choise === 'prev_year') {
-        const start = date.subtractFromDate(this.start, { year: 1 }),
-          end = date.subtractFromDate(this.end, { year: 1 })
-        this.prev_start = date.formatDate(start, this.dateFormat)
-        this.prev_end = date.formatDate(end, this.dateFormat)
-      }
+    compare_choise () { this.updatePrev() },
+    start () {
+      this.choise = this.getChoiseFromDate?.value ?? 'custom'
+      this.updatePrev()
+      this.move()
     },
-    start () { this.updateChoises() },
-    end () { this.updateChoises() },
-    prev_start () { this.updateChoises() },
-    prev_end () { this.updateChoises() }
+    end () {
+      this.choise = this.getChoiseFromDate?.value ?? 'custom'
+      this.updatePrev()
+    }
   },
 
   methods: {
     // actions
+    resetModel () {
+      this.start = this.value.start
+      this.end = this.value.end
+      this.prev_start = this.value.prev_start
+      this.prev_end = this.value.prev_end
+    },
+    async move () {
+      const ref = this.$refs.datePicker
+      if (ref) await ref.$refs.calendar.move(this.start)
+    },
     prev () {
       const diff = this.getPeriodFromChoise
       this.start = date.formatDate(date.addToDate(this.start, diff), this.dateFormat)
@@ -346,6 +380,10 @@ export default {
       }
       this.emitInput()
     },
+    cancel () {
+      this.resetModel()
+      this.$refs.menu.hide()
+    },
     clear () {
       this.start = null
       this.end = null
@@ -353,9 +391,28 @@ export default {
       this.prev_end = null
       this.emitInput()
     },
-    updateChoises () {
-      this.choise = this.getChoiseFromDate?.value ?? 'custom'
-
+    updatePrev () {
+      if (!this.start || !this.end) return
+      if (this.compare_choise === 'prev_period') {
+        if (this.prev_dates.findIndex(({ value }) => value === this.choise) !== -1) {
+          const { start, end } = this.prev_dates.find(({ value }) => value === this.choise)
+          this.prev_start = date.formatDate(start, this.dateFormat)
+          this.prev_end = date.formatDate(end, this.dateFormat)
+        } else {
+          // se non è uno dei periodi rifletto a specchio
+          const end = date.subtractFromDate(this.start, { days: 1 }),
+            start = date.subtractFromDate(this.start, { days: -this.getDayDiff + 1 })
+          this.prev_start = date.formatDate(start, this.dateFormat)
+          this.prev_end = date.formatDate(end, this.dateFormat)
+        }
+      } else if (this.compare_choise === 'prev_year') {
+        const start = date.subtractFromDate(this.start, { year: 1 }),
+          end = date.subtractFromDate(this.end, { year: 1 })
+        this.prev_start = date.formatDate(start, this.dateFormat)
+        this.prev_end = date.formatDate(end, this.dateFormat)
+      }
+    },
+    updatePrevChoises () {
       // fa parte dei periodi?
       if (this.getCompareChoiseFromDate) this.compare_choise = 'prev_period'
 
@@ -424,4 +481,18 @@ export default {
 .custom-hover
   &:hover
     color $primary !important
+
+div >>>
+  .vc-grid-cell
+    .on-left
+      margin-right 0
+
+    .on-right
+      margin-left 0
+
+  .vc-border
+    border-style none
+
+  .vc-weeks
+    padding 0
 </style>

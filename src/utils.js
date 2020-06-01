@@ -1,12 +1,12 @@
 import { date } from 'quasar'
 
-const startOfDate = (val, unit) => {
-  if (unit === 'week') return date.addToDate(val, { days: -date.getDayOfWeek(val) + 1 })
+const startOfDate = (val, unit, pad) => {
+  if (unit === 'week') return date.addToDate(val, { days: -date.getDayOfWeek(val) + pad })
   else if (unit === 'month') return date.startOfDate(val, 'month')
 }
 
-const endOfDate = (val, unit) => {
-  if (unit === 'week') return date.addToDate(val, { days: 7 - date.getDayOfWeek(val) })
+const endOfDate = (val, unit, pad) => {
+  if (unit === 'week') return date.addToDate(val, { days: 6 - date.getDayOfWeek(val) + pad })
   else if (unit === 'month') return date.endOfDate(val, 'month')
 }
 

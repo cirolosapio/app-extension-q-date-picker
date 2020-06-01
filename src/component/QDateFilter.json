@@ -1,76 +1,119 @@
 {
   "type": "component",
-
   "props": {
     "value": {
-      "type": [ "Object" ],
+      "type": [
+        "Object"
+      ],
       "desc": "Model of the component; Either use this property (along with a listener for 'input' event) OR use v-model directive",
       "required": true,
-      "examples": [ "v-model=\"myText\"" ],
+      "examples": [
+        "v-model=\"myText\""
+      ],
       "category": "model"
     },
-
-    "max-years": {
-      "type": [ "Number" ],
-      "desc": "",
-      "default": 2,
+    "now": {
+      "type": [
+        "String"
+      ],
+      "desc": "Reference day",
+      "examples": [
+        "2020-06-01"
+      ],
       "category": "model"
     },
-
-    "locale": {
-      "type": [ "String" ],
-      "desc": "The language of the component",
+    "compare": {
+      "type": [
+        "Boolean"
+      ],
+      "desc": "Enable compare mode",
+      "category": "behavior"
+    },
+    "clearable": {
+      "type": [
+        "Boolean"
+      ],
+      "desc": "Enable clearable button",
+      "category": "behavior"
+    },
+    "displayFormat": {
+      "type": [
+        "String"
+      ],
+      "desc": "Display format for the selected range",
+      "examples": [
+        "D MMMM YYYY",
+        "D MMMM YY",
+        "D MMM YY"
+      ],
+      "default": "D MMM YYYY",
       "category": "style"
     },
-    "no-compare": {
-      "type": [ "Boolean" ],
-      "desc": "Disable compare mode",
-      "category": "style"
-    },
-
     "color": {
-      "type": [ "String" ],
-      "desc": "Color name for component from the Quasar Color Palette",
-      "examples": [ "primary", "teal-10" ],
-      "default": "primary",
+      "type": [
+        "String"
+      ],
+      "desc": "Color name for component",
+      "examples": [
+        "blue",
+        "purple",
+        "red",
+        "green",
+        "teal",
+        "orange",
+        "indigo",
+        "yellow",
+        "pink"
+      ],
+      "default": "blue",
       "category": "style"
     },
-
-    "previous-color": {
-      "type": [ "String" ],
-      "desc": "Color name for component from the Quasar Color Palette for the previous period",
-      "examples": [ "amber", "cyan-6" ],
-      "default": "amber",
+    "prev-color": {
+      "type": [
+        "String"
+      ],
+      "desc": "Color name for component",
+      "examples": [
+        "blue",
+        "purple",
+        "red",
+        "green",
+        "teal",
+        "orange",
+        "indigo",
+        "yellow",
+        "pink"
+      ],
+      "default": "orange",
       "category": "style"
     },
-
     "toggle-color": {
-      "type": [ "String" ],
+      "type": [
+        "String"
+      ],
       "desc": "Color name for component from the Quasar Color Palette for the compare toggle",
-      "examples": [ "secondary", "blue" ],
+      "examples": [
+        "secondary",
+        "blue"
+      ],
       "default": "secondary",
       "category": "style"
     },
-
-    "transition-show": {
-      "desc": "One of Quasar's embedded transitions",
-      "default": "jump-left",
-      "examples": [ "fade", "slide-down" ],
-      "category": "behavior"
+    "menu-props": {
+      "type": [
+        "Object"
+      ],
+      "desc": "Props configuration for popup-proxy",
+      "default": "{ transitionShow: 'jump-left', transitionHide: 'jump-right', anchor: 'top right' }",
+      "category": "style"
     },
-
-    "transition-hide": {
-      "desc": "One of Quasar's embedded transitions",
-      "default": "jump-right",
-      "examples": [ "fade", "slide-down" ],
-      "category": "behavior"
-    },
-
-    "anchor": {
-      "desc": "Two values setting the starting position or anchor point of the menu relative to its target",
-      "default": "top right",
-      "examples": [ "top left", "bottom right" ],
-      "category": "position"
+    "labels": {
+      "type": [
+        "Object"
+      ],
+      "desc": "Label customization",
+      "default": "{ custom: 'Custom', last_year: 'Last Year', compare: 'Compare', prev_period: 'Previous Period' }",
+      "category": "style"
     }
   },
   "events": {
@@ -78,7 +121,11 @@
       "extends": "input",
       "params": {
         "value": {
-          "type": [ "Object" ]
+          "desc": "New model value",
+          "type": [
+            "Object"
+          ],
+          "required": true
         }
       }
     }

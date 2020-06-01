@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-item dense class="cursor-pointer custom-button">
+    <q-item dense class="cursor-pointer custom-button q-pr-none">
       <template v-if="start || end">
         <q-item-section side v-if="getChoiseFromDate">
           <q-item-label caption>{{ getChoiseFromDate.label }}</q-item-label>
@@ -24,90 +24,98 @@
       </q-item-section>
 
       <q-popup-proxy v-bind="popupProps" @before-show="refresh">
-        <q-card-section horizontal>
-          <q-card-section class="q-pa-none" style="min-width: 150px">
-            <q-list padding class="custom-tabs">
-              <q-tabs v-bind="tabsProps(color)" v-model="choise">
-                <q-tab label="Custom" name="custom" />
-                <q-separator spaced />
-                <q-tab :label="label" :name="value" v-for="{ value, label } in dates" :key="value" />
-              </q-tabs>
-
-              <template v-if="compare">
-                <q-separator spaced />
-
-                <q-item tag="label" dense clickable>
-                  <q-item-section>
-                    <q-item-label>Compare</q-item-label> <!-- TODO: lang -->
-                  </q-item-section>
-                  <q-item-section side>
-                    <q-toggle dense :color="toggleColor" v-model="comparing" />
-                  </q-item-section>
-                </q-item>
-                <q-tabs v-bind="tabsProps(prevColor)" v-if="comparing" v-model="compare_choise">
-                  <q-tab name="prev_period" :label="getCompareChoiseFromDate ? getCompareChoiseFromDate.label : 'Previous period'" /> <!-- TODO: lang -->
-                  <q-tab name="prev_year" :label="'Last Year'" /> <!-- TODO: lang -->
-                  <q-tab name="custom" :label="'Custom'" /> <!-- TODO: lang -->
+        <q-card>
+          <q-card-section horizontal>
+            <q-card-section class="q-pa-none" style="min-width: 130px">
+              <q-list padding class="custom-tabs">
+                <q-tabs v-bind="tabsProps(color)" v-model="choise">
+                  <q-tab :label="labels.custom" name="custom" />
+                  <q-separator spaced />
+                  <q-tab :label="label" :name="value" v-for="{ value, label } in dates" :key="value" />
                 </q-tabs>
-              </template>
-            </q-list>
-          </q-card-section>
 
-          <q-separator vertical />
+                <template v-if="compare">
+                  <q-separator spaced />
 
-          <q-card-section class="q-pa-none">
-            <q-list>
-              <q-item dense class="q-px-xs custom-input">
-                <q-item-section side>
-                  <q-input v-bind="inputProps" :max="end" :color="color" v-model="start" />
-                </q-item-section>
-                <q-item-section>
-                  <q-icon :name="icons.mdiMinus" />
-                </q-item-section>
-                <q-item-section side>
-                  <q-input v-bind="inputProps" :min="start" :color="color" v-model="end" />
-                </q-item-section>
-              </q-item>
+                  <q-item tag="label" dense clickable class="q-px-sm">
+                    <q-item-section>
+                      <q-item-label>{{ labels.compare }}</q-item-label>
+                    </q-item-section>
+                    <q-item-section side>
+                      <q-toggle dense :color="toggleColor" v-model="comparing" />
+                    </q-item-section>
+                  </q-item>
+                  <q-tabs v-bind="tabsProps(prevColor)" v-if="comparing" v-model="compare_choise">
+                    <q-tab name="prev_period" :label="getCompareChoiseFromDate ? getCompareChoiseFromDate.label : labels.prev_period" />
+                    <q-tab name="prev_year" :label="labels.last_year" />
+                    <q-tab name="custom" :label="labels.custom" />
+                  </q-tabs>
+                </template>
+              </q-list>
+            </q-card-section>
 
-              <template v-if="comparing">
-                <q-item-label caption class="q-pt-sm q-pl-md" :class="{ 'text-white': $q.dark.isActive }">Compare</q-item-label> <!-- TODO: lang -->
+            <q-separator vertical />
+
+            <q-card-section class="q-pa-none col">
+              <q-list>
                 <q-item dense class="q-px-xs custom-input">
                   <q-item-section side>
-                    <q-input v-bind="inputProps" :max="prev_end" :color="color" v-model="prev_start" @input="updatePrevChoises" />
+                    <q-input v-bind="inputProps" :max="end" :color="color" v-model="start" />
                   </q-item-section>
                   <q-item-section>
                     <q-icon :name="icons.mdiMinus" />
                   </q-item-section>
                   <q-item-section side>
-                    <q-input v-bind="inputProps" :min="prev_start" :color="color" v-model="prev_end" @change="updatePrevChoises" />
+                    <q-input v-bind="inputProps" :min="start" :color="color" v-model="end" />
                   </q-item-section>
                 </q-item>
-              </template>
-            </q-list>
 
+                <template v-if="comparing">
+                  <q-item-label caption class="q-pt-sm q-pl-md" :class="{ 'text-white': $q.dark.isActive }">{{ labels.compare }}</q-item-label>
+                  <q-item dense class="q-px-xs custom-input">
+                    <q-item-section side>
+                      <q-input v-bind="inputProps" :max="prev_end" :color="color" v-model="prev_start" @input="updatePrevChoises" />
+                    </q-item-section>
+                    <q-item-section>
+                      <q-icon :name="icons.mdiMinus" />
+                    </q-item-section>
+                    <q-item-section side>
+                      <q-input v-bind="inputProps" :min="prev_start" :color="color" v-model="prev_end" @change="updatePrevChoises" />
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-list>
+
+              <q-separator />
+
+              <div :style="$q.dark.isActive ? 'background-color: #0B1419' : ''">
+                <date-picker v-bind="datePickerProps" v-model="selectedDate" />
+              </div>
+            </q-card-section>
+          </q-card-section>
+
+          <template v-if="choise === 'custom' || comparing">
             <q-separator />
 
-            <div>
-              <date-picker v-bind="datePickerProps" v-model="selectedDate" />
-            </div>
-          </q-card-section>
-        </q-card-section>
+            <q-card-actions align="between">
+              <div class="items-center">
+                <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiChevronLeft" @click.stop="prev(false)" />
+                <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiChevronRight" @click.stop="next(false)" />
+              </div>
 
-        <template v-if="choise === 'custom' || comparing">
-          <q-separator />
-
-          <q-card-actions align="right">
-            <q-btn no-caps flat :label="$q.lang.label.cancel" color="grey" @click="cancel()" />
-            <q-btn no-caps flat :label="$q.lang.label.refresh" color="secondary" @click="refresh()" />
-            <q-btn no-caps flat :label="$q.lang.label.set" :color="color" @click="emitInput()" />
-          </q-card-actions>
-        </template>
+              <div>
+                <q-btn no-caps flat :label="$q.lang.label.cancel" color="grey" @click="cancel()" />
+                <q-btn no-caps flat :label="$q.lang.label.refresh" color="secondary" @click="refresh()" />
+                <q-btn no-caps flat :label="$q.lang.label.set" :color="color" :disable="!start || !end" @click="emitInput()" />
+              </div>
+            </q-card-actions>
+          </template>
+        </q-card>
       </q-popup-proxy>
     </q-item>
 
     <q-item-label class="float-right" caption v-if="comparing && (prev_start || prev_end)">
-      <!-- TODO: lang -->
-      Compare: {{ displayPrevDate }}
+      {{ labels.compare }}: {{ displayPrevDate }}
     </q-item-label>
   </div>
 </template>
@@ -117,6 +125,11 @@ import { mdiChevronLeft, mdiChevronRight, mdiMenuDown, mdiMinus, mdiCloseCircle 
 import { startOfDate, endOfDate, deepEqual } from '../utils'
 import { DatePicker } from 'v-calendar'
 import { date } from 'quasar'
+
+const
+  dateFormat = 'YYYY-MM-DD',
+  { extractDate, formatDate, addToDate, subtractFromDate, getDateDiff, isSameDate } = date
+
 export default {
   name: 'QDateFilter',
   props: {
@@ -124,6 +137,7 @@ export default {
       type: Object,
       required: true
     },
+    now: String,
     periods: {
       type: Array,
       required: true
@@ -134,10 +148,6 @@ export default {
     clearable: Boolean,
 
     // formats
-    dateFormat: {
-      type: String,
-      default: () => 'YYYY-MM-DD'
-    },
     displayFormat: {
       type: String,
       default: () => 'D MMM YYYY'
@@ -152,13 +162,24 @@ export default {
         transitionHide: 'jump-right'
       })
     },
+    labels: {
+      type: Object,
+      default: () => ({
+        custom: 'Custom',
+        last_year: 'Last Year',
+        compare: 'Compare',
+        prev_period: 'Previous Period'
+      })
+    },
     color: {
       type: String,
-      default: () => 'blue'
+      default: () => 'blue',
+      validator: c => ['blue', 'purple', 'red', 'green', 'teal', 'orange', 'indigo', 'yellow', 'pink'].includes(c)
     },
     prevColor: {
       type: String,
-      default: () => 'orange'
+      default: () => 'orange',
+      validator: c => ['blue', 'purple', 'red', 'green', 'teal', 'orange', 'indigo', 'yellow', 'pink'].includes(c)
     },
     toggleColor: {
       type: String,
@@ -171,6 +192,7 @@ export default {
     return {
       choise: 'custom',
       compare_choise: 'prev_period',
+      last_choise: null,
       comparing: false,
 
       icons: {
@@ -192,23 +214,23 @@ export default {
     // date-picker models
     selectedDate: {
       get () {
-        const start = this.start ? date.extractDate(this.start, this.dateFormat) : null
-        const end = this.end ? date.extractDate(this.end, this.dateFormat) : null
+        const start = this.start ? extractDate(this.start, dateFormat) : null
+        const end = this.end ? extractDate(this.end, dateFormat) : null
         return { start, end }
       },
       set ({ start, end }) {
-        this.start = date.formatDate(start, this.dateFormat)
-        this.end = date.formatDate(end, this.dateFormat)
+        this.start = formatDate(start, dateFormat)
+        this.end = formatDate(end, dateFormat)
       }
     },
     selectedPrevDate () {
-      return (this.comparing && this.start && this.end && this.prev_start && this.prev_end) ? [
+      return (this.comparing && this.prev_start && this.prev_end) ? [
         {
           key: 'prevDate',
           highlight: this.prevColor,
           dates: [{
-            start: date.extractDate(this.prev_start, this.dateFormat),
-            end: date.extractDate(this.prev_end, this.dateFormat)
+            start: extractDate(this.prev_start, dateFormat),
+            end: extractDate(this.prev_end, dateFormat)
           }]
         }
       ] : []
@@ -220,9 +242,11 @@ export default {
         ref: 'datePicker',
         mode: 'range',
         titlePosition: 'left',
+        class: 'transparent',
         rows: this.dates.length >= 9 ? 2 : 1,
         isInline: true,
         isExpanded: true,
+        isDark: this.$q.dark.isActive,
         color: this.color,
         locale: this.$q.lang.isoName,
         firstDayOfWeek: this.$q.lang.date.firstDayOfWeek + 1,
@@ -234,9 +258,9 @@ export default {
         ref: 'menu',
         maximized: true,
         cover: true,
-        maxHeight: '1000px',
-        ...this.menuProps,
-        persistent: this.choise === 'custom' || this.comparing
+        maxHeight: '100vh',
+        persistent: this.choise === 'custom' || this.comparing,
+        ...this.menuProps
       }
     },
     tabsProps () {
@@ -245,7 +269,7 @@ export default {
         switchIndicator: true,
         noCaps: true,
         indicatorColor: color,
-        activeBgColor: this.$q.dark.isActive ? 'grey-10' : color + '-1',
+        activeBgColor: this.$q.dark.isActive ? 'grey-9' : color + '-1',
         activeColor: this.$q.dark.isActive ? color : color
       })
     },
@@ -262,10 +286,10 @@ export default {
     // getters
     dates () {
       return this.periods.map(({ start = {}, end = {}, startOf, endOf, ...rest }) => {
-        const today = new Date().toJSON().slice(0, 10)
+        const today = this.now || new Date().toJSON().slice(0, 10)
 
-        start = date.addToDate(today, start)
-        end = date.addToDate(today, end)
+        start = addToDate(today, start)
+        end = addToDate(today, end)
 
         if (startOf) start = startOfDate(start, startOf, this.$q.lang.date.firstDayOfWeek)
         if (endOf) end = endOfDate(end, endOf, this.$q.lang.date.firstDayOfWeek)
@@ -276,87 +300,85 @@ export default {
     prev_dates () {
       if (!this.comparing) return []
       return this.dates.map(({ start, end, prev, value }, idx, dates) => {
-        start = date.addToDate(start, prev)
-        end = date.addToDate(end, prev)
-        const res = { start, end, value, label: 'Previous period' } // TODO: lang
+        start = addToDate(start, prev)
+        end = addToDate(end, prev)
+        const res = { start, end, value, label: this.labels.prev_period }
 
         const next = dates[idx + 1]
-        if (next) {
-          const { label, prev: period } = next
-          if (deepEqual(period, prev)) res.label = label
-        }
+        if (next && deepEqual(next.prev, prev)) res.label = next.label
 
         return res
       })
     },
     getChoiseFromDate () {
       return this.dates.find(({ start, end }) =>
-        this.start === date.formatDate(start, this.dateFormat) &&
-        this.end === date.formatDate(end, this.dateFormat))
+        this.start === formatDate(start, dateFormat) &&
+        this.end === formatDate(end, dateFormat))
     },
     getCompareChoiseFromDate () {
       return this.prev_dates.find(({ start, end }) =>
-        this.prev_start === date.formatDate(start, this.dateFormat) &&
-        this.prev_end === date.formatDate(end, this.dateFormat))
+        this.prev_start === formatDate(start, dateFormat) &&
+        this.prev_end === formatDate(end, dateFormat))
     },
     getDateFromChoise () {
-      return this.dates.find(({ value }) => value === this.choise)
-    },
-    getPrevDateFromChoise () {
-      return this.prev_dates.find(({ value }) => value === this.choise)
+      return this.dates.find(({ value }) => value === this.last_choise)
     },
     getDayDiff () {
-      return date.getDateDiff(this.start, this.end, 'days')
+      return getDateDiff(this.end, this.start, 'days')
     },
     getPeriodFromChoise () {
-      return this.getDateFromChoise ? this.getDateFromChoise.prev : { days: -this.getDayDiff - 1 }
+      if (!this.getDateFromChoise) return { days: -this.getDayDiff - 1 }
+      else return this.getDateFromChoise.prev
     },
 
     // display values
+    getReadableFormat () {
+      return (start, end) => {
+        if (isSameDate(start, end, 'day')) return formatDate(start, this.displayFormat)
+        else if (isSameDate(start, end, 'month')) return `${formatDate(start, 'D')} - ${formatDate(end, this.displayFormat)}`
+        else if (isSameDate(start, end, 'year')) return `${formatDate(start, 'D MMM')} - ${formatDate(end, this.displayFormat)}`
+        else return `${formatDate(start, this.displayFormat)} - ${formatDate(end, this.displayFormat)}`
+      }
+    },
     displayDate () {
       if (!this.start || !this.end) return null
-      if (this.start === this.end) return date.formatDate(this.start, this.displayFormat)
-      else if (date.isSameDate(this.start, this.end, 'month')) return `${date.formatDate(this.start, 'D')} - ${date.formatDate(this.end, this.displayFormat)}`
-      else if (date.isSameDate(this.start, this.end, 'year')) return `${date.formatDate(this.start, 'D MMM')} - ${date.formatDate(this.end, this.displayFormat)}`
-      else return `${date.formatDate(this.start, this.displayFormat)} - ${date.formatDate(this.end, this.displayFormat)}`
+      else return this.getReadableFormat(extractDate(this.start, dateFormat), extractDate(this.end, dateFormat))
     },
     displayPrevDate () {
       if (!this.prev_start || !this.prev_end) return null
-      if (this.prev_start === this.prev_end) return date.formatDate(this.prev_start, this.displayFormat)
-      else if (date.isSameDate(this.prev_start, this.prev_end, 'month')) return `${date.formatDate(this.prev_start, 'D')} - ${date.formatDate(this.prev_end, this.displayFormat)}`
-      else if (date.isSameDate(this.prev_start, this.prev_end, 'year')) return `${date.formatDate(this.prev_start, 'D MMM')} - ${date.formatDate(this.prev_end, this.displayFormat)}`
-      else return `${date.formatDate(this.prev_start, this.displayFormat)} - ${date.formatDate(this.prev_end, this.displayFormat)}`
+      else return this.getReadableFormat(extractDate(this.prev_start, dateFormat), extractDate(this.prev_end, dateFormat))
     }
   },
 
   watch: {
     choise (choise) {
+      if (choise !== 'custom') this.last_choise = choise
       if (this.dates.findIndex(({ value }) => value === choise) !== -1) {
         const { start, end } = this.dates.find(({ value }) => value === choise)
-        this.start = date.formatDate(start, this.dateFormat)
-        this.end = date.formatDate(end, this.dateFormat)
+        this.start = formatDate(start, dateFormat)
+        this.end = formatDate(end, dateFormat)
       }
       if (this.comparing && this.prev_dates.findIndex(({ value }) => value === choise) !== -1) {
         const { start, end } = this.prev_dates.find(({ value }) => value === choise)
-        this.prev_start = date.formatDate(start, this.dateFormat)
-        this.prev_end = date.formatDate(end, this.dateFormat)
+        this.prev_start = formatDate(start, dateFormat)
+        this.prev_end = formatDate(end, dateFormat)
       }
       if (!this.comparing && choise !== 'custom') this.emitInput()
     },
     compare_choise () { this.updatePrev() },
+    comparing (needCompute) { if (needCompute) this.updatePrev() },
     start () {
-      this.choise = this.getChoiseFromDate?.value ?? 'custom'
+      this.choise = this.getChoiseFromDate && this.getChoiseFromDate.value ? this.getChoiseFromDate.value : 'custom'
       this.updatePrev()
       this.move()
     },
     end () {
-      this.choise = this.getChoiseFromDate?.value ?? 'custom'
+      this.choise = this.getChoiseFromDate && this.getChoiseFromDate.value ? this.getChoiseFromDate.value : 'custom'
       this.updatePrev()
     }
   },
 
   methods: {
-    // actions
     refresh () {
       this.start = this.value.start
       this.end = this.value.end
@@ -367,25 +389,33 @@ export default {
       const ref = this.$refs.datePicker
       if (ref) await ref.$refs.calendar.move(this.start)
     },
-    prev () {
+    prev (emit = true) {
       const diff = this.getPeriodFromChoise
-      this.start = date.formatDate(date.addToDate(this.start, diff), this.dateFormat)
-      this.end = date.formatDate(date.addToDate(this.end, diff), this.dateFormat)
+      this.start = formatDate(addToDate(this.start, diff), dateFormat)
+      this.end = Object.keys(diff).includes('month')
+        ? formatDate(endOfDate(addToDate(this.end, diff), 'month'), dateFormat)
+        : formatDate(addToDate(this.end, diff), dateFormat)
       if (this.comparing) {
-        this.prev_start = date.formatDate(date.addToDate(this.prev_start, diff), this.dateFormat)
-        this.prev_end = date.formatDate(date.addToDate(this.prev_end, diff), this.dateFormat)
+        this.prev_start = formatDate(addToDate(this.prev_start, diff), dateFormat)
+        this.prev_end = Object.keys(diff).includes('month')
+          ? formatDate(endOfDate(addToDate(this.prev_end, diff), 'month'), dateFormat)
+          : formatDate(addToDate(this.prev_end, diff), dateFormat)
       }
-      this.emitInput()
+      if (emit) this.emitInput()
     },
-    next () {
+    next (emit) {
       const diff = this.getPeriodFromChoise
-      this.start = date.formatDate(date.subtractFromDate(this.start, diff), this.dateFormat)
-      this.end = date.formatDate(date.subtractFromDate(this.end, diff), this.dateFormat)
+      this.start = formatDate(subtractFromDate(this.start, diff), dateFormat)
+      this.end = Object.keys(diff).includes('month')
+        ? formatDate(endOfDate(subtractFromDate(this.end, diff), 'month'), dateFormat)
+        : formatDate(subtractFromDate(this.end, diff), dateFormat)
       if (this.comparing) {
-        this.prev_start = date.formatDate(date.subtractFromDate(this.prev_start, diff), this.dateFormat)
-        this.prev_end = date.formatDate(date.subtractFromDate(this.prev_end, diff), this.dateFormat)
+        this.prev_start = formatDate(subtractFromDate(this.prev_start, diff), dateFormat)
+        this.prev_end = Object.keys(diff).includes('month')
+          ? formatDate(endOfDate(subtractFromDate(this.prev_end, diff), 'month'), dateFormat)
+          : formatDate(subtractFromDate(this.prev_end, diff), dateFormat)
       }
-      this.emitInput()
+      if (emit) this.emitInput()
     },
     cancel () {
       this.refresh()
@@ -403,20 +433,20 @@ export default {
       if (this.compare_choise === 'prev_period') {
         if (this.prev_dates.findIndex(({ value }) => value === this.choise) !== -1) {
           const { start, end } = this.prev_dates.find(({ value }) => value === this.choise)
-          this.prev_start = date.formatDate(start, this.dateFormat)
-          this.prev_end = date.formatDate(end, this.dateFormat)
+          this.prev_start = formatDate(start, dateFormat)
+          this.prev_end = formatDate(end, dateFormat)
         } else {
           // se non è uno dei periodi rifletto a specchio
-          const end = date.subtractFromDate(this.start, { days: 1 }),
-            start = date.subtractFromDate(this.start, { days: -this.getDayDiff + 1 })
-          this.prev_start = date.formatDate(start, this.dateFormat)
-          this.prev_end = date.formatDate(end, this.dateFormat)
+          const end = subtractFromDate(this.start, { days: 1 }),
+            start = subtractFromDate(this.start, { days: this.getDayDiff + 1 })
+          this.prev_start = formatDate(start, dateFormat)
+          this.prev_end = formatDate(end, dateFormat)
         }
       } else if (this.compare_choise === 'prev_year') {
-        const start = date.subtractFromDate(this.start, { year: 1 }),
-          end = date.subtractFromDate(this.end, { year: 1 })
-        this.prev_start = date.formatDate(start, this.dateFormat)
-        this.prev_end = date.formatDate(end, this.dateFormat)
+        const start = subtractFromDate(this.start, { year: 1 }),
+          end = subtractFromDate(this.end, { year: 1 })
+        this.prev_start = formatDate(start, dateFormat)
+        this.prev_end = formatDate(end, dateFormat)
       }
     },
     updatePrevChoises () {
@@ -424,12 +454,12 @@ export default {
       if (this.getCompareChoiseFromDate) this.compare_choise = 'prev_period'
 
       // è l'anno precedente?
-      else if (this.prev_start === date.formatDate(date.subtractFromDate(this.start, { year: 1 }), this.dateFormat) &&
-        this.prev_end === date.formatDate(date.subtractFromDate(this.end, { year: 1 }), this.dateFormat)) this.compare_choise = 'prev_year'
+      else if (this.prev_start === formatDate(subtractFromDate(this.start, { year: 1 }), dateFormat) &&
+        this.prev_end === formatDate(subtractFromDate(this.end, { year: 1 }), dateFormat)) this.compare_choise = 'prev_year'
 
       // è il periodo specchiato?
-      else if (this.prev_start === date.formatDate(date.subtractFromDate(this.start, { days: this.getDayDiff + 1 }), this.dateFormat) &&
-        this.prev_end === date.formatDate(date.subtractFromDate(this.start, { days: 1 }), this.dateFormat)) this.compare_choise = 'prev_period'
+      else if (this.prev_start === formatDate(subtractFromDate(this.start, { days: this.getDayDiff + 1 }), dateFormat) &&
+        this.prev_end === formatDate(subtractFromDate(this.start, { days: 1 }), dateFormat)) this.compare_choise = 'prev_period'
 
       else this.compare_choise = 'custom'
     },
@@ -453,7 +483,6 @@ export default {
 .custom-tabs >>>
   .q-tab
     justify-content left !important
-    padding 0 15px
     min-height 30px
 
   .q-tab

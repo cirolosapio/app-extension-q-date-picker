@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <q-date-filter class="float-right" v-bind="{ periods, compare, clearable, ...colorsOptions }" v-model="date" />
+    <q-date-filter class="fixed-top-right" style="margin-top: 70px;margin-right: 20px" v-bind="{ now, periods, compare, clearable, ...colorsOptions, ...formatOptions, labels: labelOptions }" v-model="date" />
 
     <div class="row">
       <q-list dense class="col-auto">
@@ -25,7 +25,9 @@
             <q-select standout :options="langOptions" dense emit-value map-options options-dense :hint="`First day of week: ${$q.lang.date.firstDayOfWeek}`" v-model="locale" />
           </q-item-section>
         </q-item>
-        <q-item v-for="(value, param) in colorsOptions" :key="`param-${param}`">
+
+        <q-item-label header>Colors</q-item-label>
+        <q-item v-for="(value, param) in colorsOptions" :key="`option-${param}`">
           <q-item-section>
             <q-item-label>{{ param }}</q-item-label>
           </q-item-section>
@@ -44,6 +46,44 @@
             </q-select>
           </q-item-section>
         </q-item>
+
+        <q-item-label header>Labels</q-item-label>
+        <q-item v-for="(value, param) in labelOptions" :key="`option-${param}`">
+          <q-item-section>
+            <q-item-label>{{ param }}</q-item-label>
+          </q-item-section>
+          <q-item-section>
+            <q-input dense standout v-model="labelOptions[param]" />
+          </q-item-section>
+        </q-item>
+
+        <q-item-label header>Formats</q-item-label>
+        <q-item v-for="(value, param) in formatOptions" :key="`option-${param}`">
+          <q-item-section>
+            <q-item-label>{{ param }}</q-item-label>
+          </q-item-section>
+          <q-item-section>
+            <q-input dense standout v-model="formatOptions[param]" />
+          </q-item-section>
+        </q-item>
+
+        <q-item-label header>Features</q-item-label>
+        <q-item dense>
+          <q-item-section>
+            <q-item-label>Reference day</q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <q-input dense standout mask="####-##-##" v-model="now">
+              <template #append>
+                <q-icon name="mdi-calendar-blank" class="cursor-pointer">
+                  <q-popup-proxy transition-show="scale" transition-hide="scale" ref="qDateProxy">
+                    <q-date today-btn mask="YYYY-MM-DD" v-model="now" @input="() => $refs.qDateProxy.hide()" />
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+          </q-item-section>
+        </q-item>
         <q-item tag="label" clickable dense>
           <q-item-section>
             <q-item-label>Enable compare mode</q-item-label>
@@ -54,7 +94,7 @@
         </q-item>
         <q-item tag="label" clickable dense>
           <q-item-section>
-            <q-item-label>Clearable</q-item-label>
+            <q-item-label>Enable clearable button</q-item-label>
           </q-item-section>
           <q-item-section side>
             <q-toggle v-model="clearable" />
@@ -134,8 +174,18 @@ export default {
         // { label: 'from start', value: 'from_start', start: m().subtract(this.maxYears, 'years').startOf('month') }
       ],
 
+      now: null,
       compare: false,
       clearable: false,
+      labelOptions: {
+        custom: 'Custom',
+        last_year: 'Last Year',
+        compare: 'Compare',
+        prev_period: 'Previous Period'
+      },
+      formatOptions: {
+        displayFormat: 'D MMM YYYY'
+      },
       colorsOptions: {
         color: 'blue',
         prevColor: 'orange',

@@ -10,7 +10,7 @@
         </q-item-section>
       </template>
       <q-item-section v-else>
-        <q-item-label caption>Select a date</q-item-label>
+        <q-item-label caption>Select a date</q-item-label> <!-- TODO: lang -->
       </q-item-section>
       <q-item-section side>
         <q-icon :name="icons.mdiMenuDown" />

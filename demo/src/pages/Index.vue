@@ -62,7 +62,7 @@
         </q-item>
 
         <q-separator spaced />
-
+        <!-- popup edit -->
         <q-item-label header>Periods</q-item-label>
         <q-markup-table dense>
           <thead>

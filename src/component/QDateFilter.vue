@@ -10,7 +10,7 @@
         </q-item-section>
       </template>
       <q-item-section v-else>
-        <q-item-label caption>Select a date</q-item-label> <!-- TODO: lang -->
+        <q-item-label caption>{{ $q.lang.label.select }}</q-item-label>
       </q-item-section>
       <q-item-section side>
         <q-icon :name="icons.mdiMenuDown" />
@@ -23,7 +23,7 @@
         </div>
       </q-item-section>
 
-      <q-popup-proxy v-bind="popupProps" @before-show="resetModel">
+      <q-popup-proxy v-bind="popupProps" @before-show="refresh">
         <q-card-section horizontal>
           <q-card-section class="q-pa-none" style="min-width: 150px">
             <q-list padding class="custom-tabs">
@@ -98,6 +98,7 @@
 
           <q-card-actions align="right">
             <q-btn no-caps flat :label="$q.lang.label.cancel" color="grey" @click="cancel()" />
+            <q-btn no-caps flat :label="$q.lang.label.refresh" color="secondary" @click="refresh()" />
             <q-btn no-caps flat :label="$q.lang.label.set" :color="color" @click="emitInput()" />
           </q-card-actions>
         </template>
@@ -106,7 +107,7 @@
 
     <q-item-label class="float-right" caption v-if="comparing && (prev_start || prev_end)">
       <!-- TODO: lang -->
-      Compare to: {{ displayPrevDate }}
+      Compare: {{ displayPrevDate }}
     </q-item-label>
   </div>
 </template>
@@ -123,20 +124,16 @@ export default {
       type: Object,
       required: true
     },
-    menuProps: {
-      type: Object,
-      default: () => ({
-        anchor: 'top right',
-        transitionShow: 'jump-left',
-        transitionHide: 'jump-right'
-      })
-    },
-    compare: Boolean,
-    clearable: Boolean,
     periods: {
       type: Array,
       required: true
     },
+
+    // features
+    compare: Boolean,
+    clearable: Boolean,
+
+    // formats
     dateFormat: {
       type: String,
       default: () => 'YYYY-MM-DD'
@@ -144,6 +141,16 @@ export default {
     displayFormat: {
       type: String,
       default: () => 'D MMM YYYY'
+    },
+
+    // configs
+    menuProps: {
+      type: Object,
+      default: () => ({
+        anchor: 'top right',
+        transitionShow: 'jump-left',
+        transitionHide: 'jump-right'
+      })
     },
     color: {
       type: String,
@@ -350,7 +357,7 @@ export default {
 
   methods: {
     // actions
-    resetModel () {
+    refresh () {
       this.start = this.value.start
       this.end = this.value.end
       this.prev_start = this.value.prev_start
@@ -381,7 +388,7 @@ export default {
       this.emitInput()
     },
     cancel () {
-      this.resetModel()
+      this.refresh()
       this.$refs.menu.hide()
     },
     clear () {

@@ -1,6 +1,6 @@
 {
   "name": "quasar-app-extension-q-date-filter",
-  "version": "v0.0.16",
+  "version": "v1.0.0-beta.1",
   "description": "QDateFilter - Quasar App Extension",
   "author": "heartbeatLV <lscorionjs@gmail.com>",
   "license": "MIT",
@@ -47,7 +47,6 @@
     "eslint-plugin-vue": "^6.1.2"
   },
   "dependencies": {
-    "moment": "^2.26.0",
     "v-calendar": "1.0.6"
   },
   "resolutions": {

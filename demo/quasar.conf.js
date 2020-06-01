@@ -72,7 +72,7 @@ module.exports = configure(function (ctx) {
       publicPath: 'app-extension-q-date-filter',
       // rtl: false, // https://quasar.dev/options/rtl-support
       showProgress: ctx.dev,
-      // modern: true,
+      modern: true,
       gzip: true,
       analyze: false,
 

@@ -113,7 +113,7 @@ export default {
   },
 
   created () {
-    // this.$q.dark.set('auto') TODO:
+    this.$q.dark.set('auto')
   },
 
   methods: {

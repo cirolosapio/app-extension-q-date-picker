@@ -99,8 +99,8 @@
 
             <q-card-actions align="between">
               <div class="items-center">
-                <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiChevronLeft" @click.stop="prev(false)" />
-                <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiChevronRight" @click.stop="next(false)" />
+                <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiChevronLeft" v-show="start && end" @click.stop="prev(false)" />
+                <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiChevronRight" v-show="start && end" @click.stop="next(false)" />
               </div>
 
               <div>

@@ -69,7 +69,7 @@ module.exports = configure(function (ctx) {
     build: {
       vueRouterMode: 'history', // available values: 'hash', 'history'
 
-      publicPath: 'app-extension-q-date-filter',
+      publicPath: 'app-extension-q-date-picker',
       // rtl: false, // https://quasar.dev/options/rtl-support
       showProgress: ctx.dev,
       modern: true,
@@ -99,7 +99,7 @@ module.exports = configure(function (ctx) {
       // watchOptions: {
       //   ignored: [
       //     'node_modules',
-      //     '!node_modules/quasar-app-extension-q-date-filter/src'
+      //     '!node_modules/quasar-app-extension-q-date-picker/src'
       //   ]
       // }
     },

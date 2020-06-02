@@ -1,2 +1,2 @@
-# quasar-app-extension-q-date-filter
-Quasar test app for q-date-filter
+# quasar-app-extension-q-date-picker
+Quasar test app for q-date-picker

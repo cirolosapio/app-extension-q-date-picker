@@ -5,7 +5,7 @@
  */
 
 module.exports = function (api) {
-  api.removePath('src/boot/q-date-filter.js')
+  api.removePath('src/boot/q-date-picker.js')
 
   api.onExitLog('Thanks for having used my extension!')
 }

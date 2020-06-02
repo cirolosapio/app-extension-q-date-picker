@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <q-date-filter class="fixed-top-right" style="margin-top: 70px;margin-right: 20px" v-bind="{ now, periods, compare, clearable, ...colorsOptions, ...formatOptions, labels: labelOptions }" v-model="date" />
+    <q-date-picker class="fixed-top-right" style="margin-top: 70px;margin-right: 20px" v-bind="{ now, periods, compare, clearable, ...colorsOptions, ...formatOptions, labels: labelOptions }" v-model="date" />
 
     <div class="row">
       <q-list dense class="col-auto">

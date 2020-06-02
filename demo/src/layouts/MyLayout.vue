@@ -5,7 +5,7 @@
         <q-btn flat dense round aria-label="Menu" icon="mdi-menu" @click="leftDrawerOpen = !leftDrawerOpen" />
 
         <q-toolbar-title>
-          QDateFilter Demo
+          QDatePicker Demo
         </q-toolbar-title>
 
         <q-btn flat round :icon="$q.dark.isActive ? 'mdi-brightness-2' : 'mdi-brightness-5'" @click="$q.dark.set(!$q.dark.isActive)" />
@@ -26,13 +26,13 @@
               <q-item-label caption>q-filter-configurator</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable tag="a" target="_blank" href="https://github.com/heartbeatLV/app-extension-q-date-filter" class="text-teal">
+          <q-item clickable tag="a" target="_blank" href="https://github.com/heartbeatLV/app-extension-q-date-picker" class="text-teal">
             <q-item-section avatar>
               <q-icon name="mdi-calendar-blank" color="teal" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>QDateFilter</q-item-label>
-              <q-item-label caption>q-date-filter</q-item-label>
+              <q-item-label>QDatePicker</q-item-label>
+              <q-item-label caption>q-date-picker</q-item-label>
             </q-item-section>
           </q-item>
         </q-expansion-item>

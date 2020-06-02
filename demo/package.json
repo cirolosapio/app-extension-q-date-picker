@@ -1,8 +1,8 @@
 {
-  "name": "q-date-filter-demo",
+  "name": "q-date-picker-demo",
   "version": "0.0.1",
-  "description": "QDateFilter Demo - A Quasar Framework app-extension",
-  "productName": "QDateFilter Demo",
+  "description": "QDatePicker Demo - A Quasar Framework app-extension",
+  "productName": "QDatePicker Demo",
   "cordovaId": "org.cordova.quasar.app",
   "author": "heartbeatLV <lscorionjs@gmail.com>",
   "private": true,
@@ -27,7 +27,7 @@
     "eslint-plugin-quasar": "^1.0.0",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.1.2",
-    "quasar-app-extension-q-date-filter": "link:../."
+    "quasar-app-extension-q-date-picker": "link:../."
   },
   "engines": {
     "node": ">= 10.18.1",

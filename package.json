@@ -1,7 +1,7 @@
 {
-  "name": "quasar-app-extension-q-date-filter",
-  "version": "v1.0.0-beta.2",
-  "description": "QDateFilter - Quasar App Extension",
+  "name": "quasar-app-extension-q-date-picker",
+  "version": "v1.0.0-rc.1",
+  "description": "QDatePicker - Quasar App Extension",
   "author": "heartbeatLV <lscorionjs@gmail.com>",
   "license": "MIT",
   "main": "src/index.js",
@@ -15,10 +15,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/heartbeatLV/app-extension-q-date-filter.git"
+    "url": "git+https://github.com/heartbeatLV/app-extension-q-date-picker.git"
   },
-  "bugs": "https://github.com/heartbeatLV/app-extension-q-date-filter/issues",
-  "homepage": "https://github.com/heartbeatLV/app-extension-q-date-filter",
+  "bugs": "https://github.com/heartbeatLV/app-extension-q-date-picker/issues",
+  "homepage": "https://github.com/heartbeatLV/app-extension-q-date-picker",
   "keywords": [
     "quasar",
     "app",
@@ -26,8 +26,9 @@
     "extension",
     "date",
     "range",
+    "picker",
     "filter",
-    "qdatefilter"
+    "qdatepicker"
   ],
   "engines": {
     "node": ">= 10.18.1",

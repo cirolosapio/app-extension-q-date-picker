@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <q-list>
     <q-item dense class="cursor-pointer custom-button q-pr-none">
       <template v-if="start || end">
         <q-item-section side v-if="getChoiseFromDate">
@@ -71,7 +71,7 @@
                 </q-item>
 
                 <template v-if="comparing">
-                  <q-item-label caption class="q-pt-sm q-pl-md" :class="{ 'text-white': $q.dark.isActive }">{{ labels.compare }}</q-item-label>
+                  <q-item-label caption class="q-pt-sm q-pl-md">{{ labels.compare }}</q-item-label>
                   <q-item dense class="q-px-xs custom-input">
                     <q-item-section side>
                       <q-input v-bind="inputProps" :max="prev_end" :color="color" v-model="prev_start" @input="updatePrevChoises" />
@@ -117,7 +117,7 @@
     <q-item-label class="float-right" caption v-if="comparing && (prev_start || prev_end)">
       {{ labels.compare }}: {{ displayPrevDate }}
     </q-item-label>
-  </div>
+  </q-list>
 </template>
 
 <script>
@@ -131,7 +131,7 @@ const
   { extractDate, formatDate, addToDate, subtractFromDate, getDateDiff, isSameDate } = date
 
 export default {
-  name: 'QDateFilter',
+  name: 'QDatePicker',
   props: {
     value: {
       type: Object,
@@ -241,6 +241,8 @@ export default {
       return {
         ref: 'datePicker',
         mode: 'range',
+        navVisibility: 'focus',
+        transition: 'slide-v',
         titlePosition: 'left',
         class: 'transparent',
         rows: this.dates.length >= 9 ? 2 : 1,
@@ -294,14 +296,17 @@ export default {
         if (startOf) start = startOfDate(start, startOf, this.$q.lang.date.firstDayOfWeek)
         if (endOf) end = endOfDate(end, endOf, this.$q.lang.date.firstDayOfWeek)
 
-        return { ...rest, start, end }
+        return { ...rest, start, end, endOf }
       })
     },
     prev_dates () {
       if (!this.comparing) return []
-      return this.dates.map(({ start, end, prev, value }, idx, dates) => {
+      return this.dates.map(({ start, end, endOf, prev, value }, idx, dates) => {
         start = addToDate(start, prev)
         end = addToDate(end, prev)
+
+        if (endOf) end = endOfDate(end, endOf, this.$q.lang.date.firstDayOfWeek)
+
         const res = { start, end, value, label: this.labels.prev_period }
 
         const next = dates[idx + 1]
@@ -387,7 +392,11 @@ export default {
     },
     async move () {
       const ref = this.$refs.datePicker
-      if (ref) await ref.$refs.calendar.move(this.start)
+      if (ref) {
+        const from = extractDate(this.prev_end, dateFormat)
+        const to = extractDate(this.end, dateFormat)
+        await ref.$refs.calendar.showPageRange({ from, to })
+      }
     },
     prev (emit = true) {
       const diff = this.getPeriodFromChoise

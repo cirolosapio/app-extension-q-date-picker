@@ -1,6 +1,8 @@
 Quasar App Extension - QDatePicker (q-date-picker)
 ===
 
+![npm](https://img.shields.io/npm/v/quasar-app-extension-q-date-picker?label=quasar-app-extension-q-date-picker)
+
 QDatePicker is an `App Extension` for [Quasar Framework v1](https://quasar.dev/). It will not work with legacy versions of Quasar Framework.
 
 # Install

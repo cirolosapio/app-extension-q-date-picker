@@ -989,7 +989,7 @@ locate-path@^2.0.0:
     p-locate "^2.0.0"
     path-exists "^3.0.0"
 
-lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15:
+lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
@@ -1554,13 +1554,13 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
-v-calendar@1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/v-calendar/-/v-calendar-1.0.6.tgz#004e2beb3c21601490c793c58897a4b7c9d8cec9"
-  integrity sha512-tdbxBS1cF4qeXedBBMYYqyt/G0hUke3xLkpoxstTG1NZKYz+KPLAVPBZOxbedLyjn9WpfoEsC9mktvyYDrcp/A==
+v-calendar@1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/v-calendar/-/v-calendar-1.0.7.tgz#27c3db425d63c0f59d8fb7c2a25169950aa0602e"
+  integrity sha512-IyTgBRbI0q3fdAWTKwqj3yq6tdISnd35wlaICjSrHD7Af6UtYNUuQJs0X3RnkKRR19qFcAVgVLdeSu8RymPA8A==
   dependencies:
     date-fns "^2.6.0"
-    lodash "^4.17.11"
+    lodash "^4.17.15"
     popper.js "^1.14.7"
 
 v8-compile-cache@^2.0.3:

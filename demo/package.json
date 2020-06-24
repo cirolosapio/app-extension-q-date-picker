@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "QDatePicker Demo - A Quasar Framework app-extension",
   "productName": "QDatePicker Demo",
-  "cordovaId": "org.cordova.quasar.app",
   "author": "heartbeatLV <lscorionjs@gmail.com>",
   "private": true,
   "scripts": {
@@ -12,11 +11,12 @@
     "lint-fix": "eslint --ext .js,.vue src --fix"
   },
   "dependencies": {
-    "@quasar/extras": "^1.8.1",
-    "quasar": "^1.12.2"
+    "@quasar/extras": "^1.8.2",
+    "core-js": "^3.6.5",
+    "quasar": "^1.12.8"
   },
   "devDependencies": {
-    "@quasar/app": "^1.9.3",
+    "@quasar/app": "^2.0.1",
     "babel-eslint": "^10.0.1",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.0",
@@ -35,9 +35,14 @@
     "yarn": ">= 1.21.1"
   },
   "browserslist": [
-    "last 1 version, not dead, ie >= 11"
-  ],
-  "resolutions": {
-    "@babel/parser": "7.7.5"
-  }
+    "last 10 Chrome versions",
+    "last 10 Firefox versions",
+    "last 4 Edge versions",
+    "last 7 Safari versions",
+    "last 8 Android versions",
+    "last 8 ChromeAndroid versions",
+    "last 8 FirefoxAndroid versions",
+    "last 10 iOS versions",
+    "last 5 Opera versions"
+  ]
 }

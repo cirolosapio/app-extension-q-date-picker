@@ -1,6 +1,6 @@
 {
   "name": "quasar-app-extension-q-date-picker",
-  "version": "v1.0.0-rc.1",
+  "version": "v1.0.0",
   "description": "QDatePicker - Quasar App Extension",
   "author": "heartbeatLV <lscorionjs@gmail.com>",
   "license": "MIT",

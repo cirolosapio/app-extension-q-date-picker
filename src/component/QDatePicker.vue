@@ -88,7 +88,7 @@
 
               <q-separator />
 
-              <div :style="$q.dark.isActive ? 'background-color: #0B1419' : ''">
+              <div :style="$q.dark.isActive ? 'background-color: #0B1419' : ''" class="custom-calendar">
                 <date-picker v-bind="datePickerProps" v-model="selectedDate" />
               </div>
             </q-card-section>
@@ -224,28 +224,27 @@ export default {
       }
     },
     selectedPrevDate () {
-      return (this.comparing && this.prev_start && this.prev_end) ? [
-        {
-          key: 'prevDate',
-          highlight: this.prevColor,
-          dates: [{
-            start: extractDate(this.prev_start, dateFormat),
-            end: extractDate(this.prev_end, dateFormat)
+      return (this.comparing && this.prev_start && this.prev_end)
+        ? [{
+            key: 'prevDate',
+            highlight: this.prevColor,
+            dates: [{
+              start: extractDate(this.prev_start, dateFormat),
+              end: extractDate(this.prev_end, dateFormat)
+            }]
           }]
-        }
-      ] : []
+        : []
     },
 
     // configs
     datePickerProps () {
       return {
         ref: 'datePicker',
-        mode: 'range',
-        navVisibility: 'focus',
         transition: 'slide-v',
         titlePosition: 'left',
         class: 'transparent',
         rows: this.dates.length >= 9 ? 2 : 1,
+        isRange: true,
         isInline: true,
         isExpanded: true,
         isDark: this.$q.dark.isActive,
@@ -527,7 +526,7 @@ export default {
   &:hover
     color $primary !important
 
-div >>>
+.custom-calendar >>>
   .vc-grid-cell
     .on-left
       margin-right 0
@@ -535,7 +534,7 @@ div >>>
     .on-right
       margin-left 0
 
-  .vc-border
+  .vc-container
     border-style none
 
   .vc-weeks

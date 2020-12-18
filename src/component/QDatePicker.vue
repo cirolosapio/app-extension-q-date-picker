@@ -56,39 +56,41 @@
 
             <q-separator vertical />
 
-            <q-card-section class="q-pa-none col">
-              <q-list>
-                <q-item dense class="q-px-xs custom-input">
-                  <q-item-section side>
-                    <q-input v-bind="inputProps" :max="end" :color="color" v-model="start" />
-                  </q-item-section>
-                  <q-item-section>
-                    <q-icon :name="icons.mdiMinus" />
-                  </q-item-section>
-                  <q-item-section side>
-                    <q-input v-bind="inputProps" :min="start" :color="color" v-model="end" />
-                  </q-item-section>
-                </q-item>
-
-                <template v-if="comparing">
-                  <q-item-label caption class="q-pt-sm q-pl-md">{{ labels.compare }}</q-item-label>
+            <q-card-section class="q-pa-none col column">
+              <div class="col-auto">
+                <q-list>
                   <q-item dense class="q-px-xs custom-input">
                     <q-item-section side>
-                      <q-input v-bind="inputProps" :max="prev_end" :color="color" v-model="prev_start" @input="updatePrevChoises" />
+                      <q-input v-bind="inputProps" :max="end" :color="color" v-model="start" />
                     </q-item-section>
                     <q-item-section>
                       <q-icon :name="icons.mdiMinus" />
                     </q-item-section>
                     <q-item-section side>
-                      <q-input v-bind="inputProps" :min="prev_start" :color="color" v-model="prev_end" @change="updatePrevChoises" />
+                      <q-input v-bind="inputProps" :min="start" :color="color" v-model="end" />
                     </q-item-section>
                   </q-item>
-                </template>
-              </q-list>
+
+                  <template v-if="comparing">
+                    <q-item-label caption class="q-pt-sm q-pl-md">{{ labels.compare }}</q-item-label>
+                    <q-item dense class="q-px-xs custom-input">
+                      <q-item-section side>
+                        <q-input v-bind="inputProps" :max="prev_end" :color="color" v-model="prev_start" @input="updatePrevChoises" />
+                      </q-item-section>
+                      <q-item-section>
+                        <q-icon :name="icons.mdiMinus" />
+                      </q-item-section>
+                      <q-item-section side>
+                        <q-input v-bind="inputProps" :min="prev_start" :color="color" v-model="prev_end" @change="updatePrevChoises" />
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-list>
+              </div>
 
               <q-separator />
 
-              <div :style="$q.dark.isActive ? 'background-color: #0B1419' : ''" class="custom-calendar">
+              <div :style="$q.dark.isActive ? 'background-color: #0B1419' : ''" class="custom-calendar col">
                 <date-picker v-bind="datePickerProps" v-model="selectedDate" />
               </div>
             </q-card-section>
@@ -192,8 +194,8 @@ export default {
 
   data () {
     return {
-      choise: 'custom',
-      compare_choise: 'prev_period',
+      choise: null,
+      compare_choise: null,
       last_choise: null,
       comparing: this.compare && this.hideCompareToggle,
 

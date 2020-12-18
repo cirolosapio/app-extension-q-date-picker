@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <q-date-picker class="fixed-top-right" style="margin-top: 70px;margin-right: 20px" v-bind="{ now, periods, compare, clearable, ...colorsOptions, ...formatOptions, labels: labelOptions }" v-model="date" />
+    <q-date-picker class="fixed-top-right" style="margin-top: 70px;margin-right: 20px" v-bind="{ now, periods, compare, hideCompareToggle, clearable, ...colorsOptions, ...formatOptions, labels: labelOptions }" v-model="date" />
 
     <div class="row">
       <q-list dense class="col-auto">
@@ -94,6 +94,14 @@
         </q-item>
         <q-item tag="label" clickable dense>
           <q-item-section>
+            <q-item-label>Hide compare toggle</q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <q-toggle v-model="hideCompareToggle" />
+          </q-item-section>
+        </q-item>
+        <q-item tag="label" clickable dense>
+          <q-item-section>
             <q-item-label>Enable clearable button</q-item-label>
           </q-item-section>
           <q-item-section side>
@@ -177,6 +185,7 @@ export default {
       now: null,
       compare: false,
       clearable: false,
+      hideCompareToggle: false,
       labelOptions: {
         custom: 'Custom',
         last_year: 'Last Year',

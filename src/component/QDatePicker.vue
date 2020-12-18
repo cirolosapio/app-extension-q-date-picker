@@ -37,7 +37,7 @@
                 <template v-if="compare">
                   <q-separator spaced />
 
-                  <q-item tag="label" dense clickable class="q-px-sm">
+                  <q-item tag="label" dense clickable class="q-px-sm" v-if="!hideCompareToggle">
                     <q-item-section>
                       <q-item-label>{{ labels.compare }}</q-item-label>
                     </q-item-section>
@@ -145,6 +145,7 @@ export default {
 
     // features
     compare: Boolean,
+    hideCompareToggle: Boolean,
     clearable: Boolean,
 
     // formats
@@ -194,7 +195,7 @@ export default {
       choise: 'custom',
       compare_choise: 'prev_period',
       last_choise: null,
-      comparing: false,
+      comparing: this.compare && this.hideCompareToggle,
 
       icons: {
         mdiChevronLeft,

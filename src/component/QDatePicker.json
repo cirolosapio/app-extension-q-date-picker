@@ -29,6 +29,13 @@
       "desc": "Enable compare mode",
       "category": "behavior"
     },
+    "hideCompareToggle": {
+      "type": [
+        "Boolean"
+      ],
+      "desc": "Hide the compare toggle",
+      "category": "behavior"
+    },
     "clearable": {
       "type": [
         "Boolean"

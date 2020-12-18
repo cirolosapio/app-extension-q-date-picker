@@ -18,7 +18,7 @@
       <q-item-section side v-if="start || end">
         <div class="items-center">
           <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiChevronLeft" @click.stop="prev()" />
-          <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiChevronRight" @click.stop="next()" />
+          <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiChevronRight" @click.stop="next(true)" />
           <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiCloseCircle" v-if="clearable" @click.stop="clear()" />
         </div>
       </q-item-section>

@@ -186,6 +186,7 @@ export default {
       default: () => 'teal'
     }
   },
+
   components: { DatePicker },
 
   data () {
@@ -209,6 +210,8 @@ export default {
       prev_end: null
     }
   },
+
+  created () { this.refresh() },
 
   computed: {
     // date-picker models

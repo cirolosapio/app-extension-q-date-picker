@@ -2,7 +2,7 @@
   <q-list>
     <q-item dense class="cursor-pointer custom-button q-pr-none">
       <template v-if="start || end">
-        <q-item-section side v-if="getChoiseFromDate">
+        <q-item-section side v-if="getChoiseFromDate && !hidePeriodLabel">
           <q-item-label caption>{{ getChoiseFromDate.label }}</q-item-label>
         </q-item-section>
         <q-item-section>
@@ -149,6 +149,7 @@ export default {
     compare: Boolean,
     hideCompareToggle: Boolean,
     clearable: Boolean,
+    hidePeriodLabel: Boolean,
 
     // formats
     displayFormat: {

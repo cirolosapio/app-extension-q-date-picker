@@ -3,11 +3,13 @@ import { date } from 'quasar'
 const startOfDate = (val, unit, pad = 0) => {
   if (unit === 'week') return date.addToDate(val, { days: -date.getDayOfWeek(val) + pad })
   else if (unit === 'month') return date.startOfDate(val, 'month')
+  else if (unit === 'year') return date.startOfDate(val, 'year')
 }
 
 const endOfDate = (val, unit, pad = 0) => {
   if (unit === 'week') return date.addToDate(val, { days: 6 - date.getDayOfWeek(val) + pad })
   else if (unit === 'month') return date.endOfDate(val, 'month')
+  else if (unit === 'year') return date.endOfDate(val, 'year')
 }
 
 const deepEqual = (obj1, obj2) => {

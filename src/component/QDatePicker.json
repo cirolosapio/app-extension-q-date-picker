@@ -36,6 +36,13 @@
       "desc": "Hide the compare toggle",
       "category": "behavior"
     },
+    "hidePeriodLabel": {
+      "type": [
+        "Boolean"
+      ],
+      "desc": "Hide the period label",
+      "category": "behavior"
+    },
     "clearable": {
       "type": [
         "Boolean"

@@ -171,6 +171,9 @@ export default {
         { label: 'This month', value: 'this_month', prev: { month: -1 }, startOf: 'month', endOf: 'month' },
         { label: 'Last month', value: 'last_month', prev: { month: -1 }, start: { month: -1 }, startOf: 'month', end: { month: -1 }, endOf: 'month' },
         { label: '2 months ago', value: '2_months_ago', prev: { month: -1 }, start: { month: -2 }, startOf: 'month', end: { month: -2 }, endOf: 'month' },
+        { label: 'This year', value: 'this_year', prev: { year: -1 }, startOf: 'year', endOf: 'year' },
+        { label: 'Last year', value: 'last_year', prev: { year: -1 }, start: { year: -1 }, startOf: 'year', end: { year: -1 }, endOf: 'year' },
+        { label: '2 years ago', value: '2_years_ago', prev: { year: -1 }, start: { year: -2 }, startOf: 'year', end: { year: -2 }, endOf: 'year' },
 
         { label: 'Last 7 days', value: 'last_7_days', prev: { days: -7 }, start: { days: -6 } },
         { label: 'Last 14 days', value: 'last_14_days', prev: { days: -14 }, start: { days: -13 } },

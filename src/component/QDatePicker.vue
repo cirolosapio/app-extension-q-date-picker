@@ -363,8 +363,10 @@ export default {
         else if (isSameDate(start, end, 'month')) {
           if (isSameDate(start, startOfDate(start, 'month'), 'day') && isSameDate(end, endOfDate(end, 'month'), 'day')) return formatDate(start, 'MMMM YYYY')
           return `${formatDate(start, 'D')} - ${formatDate(end, this.displayFormat)}`
-        } else if (isSameDate(start, end, 'year')) return `${formatDate(start, 'D MMM')} - ${formatDate(end, this.displayFormat)}`
-        else return `${formatDate(start, this.displayFormat)} - ${formatDate(end, this.displayFormat)}`
+        } else if (isSameDate(start, end, 'year')) {
+          if (isSameDate(start, startOfDate(start, 'year'), 'day') && isSameDate(end, endOfDate(end, 'year'), 'day')) return formatDate(start, 'YYYY')
+          return `${formatDate(start, 'D MMM')} - ${formatDate(end, this.displayFormat)}`
+        } else return `${formatDate(start, this.displayFormat)} - ${formatDate(end, this.displayFormat)}`
       }
     },
     displayDate () {

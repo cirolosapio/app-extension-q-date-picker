@@ -11,14 +11,14 @@
     "lint-fix": "eslint --ext .js,.vue src --fix"
   },
   "dependencies": {
-    "@quasar/extras": "^1.9.11",
+    "@quasar/extras": "^1.9.12",
     "core-js": "^3.8.1",
     "quasar": "^1.14.7"
   },
   "devDependencies": {
-    "@quasar/app": "^2.1.11",
+    "@quasar/app": "^2.1.13",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.15.0",
+    "eslint": "^7.16.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-import": "^2.22.1",

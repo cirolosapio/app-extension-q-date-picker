@@ -1,125 +1,139 @@
 <template>
-  <q-list>
-    <q-item dense class="cursor-pointer custom-button q-pr-none">
-      <template v-if="start || end">
-        <q-item-section side v-if="getChoiseFromDate && !hidePeriodLabel">
-          <q-item-label caption>{{ getChoiseFromDate.label }}</q-item-label>
-        </q-item-section>
-        <q-item-section>
-          <q-item-label>{{ displayDate }}</q-item-label>
-        </q-item-section>
-      </template>
-      <q-item-section v-else>
-        <q-item-label caption>{{ $q.lang.label.select }}</q-item-label>
-      </q-item-section>
-      <q-item-section side>
-        <q-icon :name="icons.mdiMenuDown" />
-      </q-item-section>
-      <q-item-section side v-if="start || end">
-        <div class="items-center">
-          <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiChevronLeft" @click.stop="prev()" />
-          <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiChevronRight" @click.stop="next(true)" />
-          <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiCloseCircle" v-if="clearable" @click.stop="clear()" />
-        </div>
-      </q-item-section>
+  <div class="column">
+    <div class="col">
+      <div class="row">
+        <div class="col">
+          <q-item clickable dense class="cursor-pointer custom-button q-px-xs rounded-borders">
+            <template v-if="start || end">
+              <q-item-section side v-if="getChoiseFromDate && !hidePeriodLabel">
+                <q-item-label caption>{{ getChoiseFromDate.label }}</q-item-label>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ displayDate }}</q-item-label>
+              </q-item-section>
+            </template>
+            <q-item-section v-else>
+              <q-item-label caption>{{ $q.lang.label.select }}</q-item-label>
+            </q-item-section>
+            <q-item-section side>
+              <q-icon :name="icons.mdiMenuDown" />
+            </q-item-section>
 
-      <q-popup-proxy v-bind="popupProps" @before-show="refresh">
-        <q-card>
-          <q-card-section horizontal>
-            <q-card-section class="q-pa-none" style="min-width: 130px">
-              <q-list padding class="custom-tabs">
-                <q-tabs v-bind="tabsProps(color)" v-model="choise">
-                  <q-tab :label="labels.custom" name="custom" />
-                  <q-separator spaced />
-                  <q-tab :label="label" :name="value" v-for="{ value, label } in dates" :key="value" />
-                </q-tabs>
+            <q-popup-proxy v-bind="popupProps" @before-show="refresh">
+              <q-card>
+                <q-card-section horizontal>
+                  <q-card-section class="q-pa-none" style="min-width: 130px">
+                    <q-list padding class="custom-tabs">
+                      <q-tabs v-bind="tabsProps(color)" v-model="choise">
+                        <q-tab :label="labels.custom" name="custom" />
+                        <q-separator spaced />
+                        <q-tab :label="label" :name="value" v-for="{ value, label } in dates" :key="value" />
+                      </q-tabs>
 
-                <template v-if="compare">
-                  <q-separator spaced />
+                      <template v-if="compare">
+                        <q-separator spaced />
 
-                  <q-item tag="label" dense clickable class="q-px-sm" v-if="!hideCompareToggle">
-                    <q-item-section>
-                      <q-item-label>{{ labels.compare }}</q-item-label>
-                    </q-item-section>
-                    <q-item-section side>
-                      <q-toggle dense :color="toggleColor" v-model="comparing" />
-                    </q-item-section>
-                  </q-item>
-                  <q-tabs v-bind="tabsProps(prevColor)" v-if="comparing" v-model="compare_choise">
-                    <q-tab name="prev_period" :label="getCompareChoiseFromDate ? getCompareChoiseFromDate.label : labels.prev_period" />
-                    <q-tab name="prev_year" :label="labels.last_year" />
-                    <q-tab name="custom" :label="labels.custom" />
-                  </q-tabs>
+                        <q-item tag="label" dense clickable class="q-px-sm" v-if="!hideCompareToggle">
+                          <q-item-section>
+                            <q-item-label>{{ labels.compare }}</q-item-label>
+                          </q-item-section>
+                          <q-item-section side>
+                            <q-toggle dense :color="toggleColor" v-model="comparing" />
+                          </q-item-section>
+                        </q-item>
+                        <q-tabs v-bind="tabsProps(prevColor)" v-if="comparing" v-model="compare_choise">
+                          <q-tab name="prev_period" :label="getCompareChoiseFromDate ? getCompareChoiseFromDate.label : labels.prev_period" />
+                          <q-tab name="prev_year" :label="labels.last_year" />
+                          <q-tab name="custom" :label="labels.custom" />
+                        </q-tabs>
+                      </template>
+                    </q-list>
+                  </q-card-section>
+
+                  <q-separator vertical />
+
+                  <q-card-section class="q-pa-none col column">
+                    <div class="col-auto">
+                      <q-list>
+                        <q-item dense class="q-px-xs custom-input">
+                          <q-item-section side>
+                            <q-input v-bind="inputProps" :max="end" :color="color" v-model="start" />
+                          </q-item-section>
+                          <q-item-section>
+                            <q-icon :name="icons.mdiMinus" />
+                          </q-item-section>
+                          <q-item-section side>
+                            <q-input v-bind="inputProps" :min="start" :color="color" v-model="end" />
+                          </q-item-section>
+                        </q-item>
+
+                        <template v-if="comparing">
+                          <q-item-label caption class="q-pt-sm q-pl-md">{{ labels.compare }}</q-item-label>
+                          <q-item dense class="q-px-xs custom-input">
+                            <q-item-section side>
+                              <q-input v-bind="inputProps" :max="prev_end" :color="color" v-model="prev_start" @input="updatePrevChoises" />
+                            </q-item-section>
+                            <q-item-section>
+                              <q-icon :name="icons.mdiMinus" />
+                            </q-item-section>
+                            <q-item-section side>
+                              <q-input v-bind="inputProps" :min="prev_start" :color="color" v-model="prev_end" @change="updatePrevChoises" />
+                            </q-item-section>
+                          </q-item>
+                        </template>
+                      </q-list>
+                    </div>
+
+                    <q-separator />
+
+                    <div :style="$q.dark.isActive ? 'background-color: #0B1419' : ''" class="custom-calendar col">
+                      <date-picker v-bind="datePickerProps" v-model="selectedDate" />
+                    </div>
+                  </q-card-section>
+                </q-card-section>
+
+                <template v-if="choise === 'custom' || comparing">
+                  <q-separator />
+
+                  <q-card-actions align="between">
+                    <div class="items-center">
+                      <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiChevronLeft" v-show="start && end" @click.stop="prev(false)" />
+                      <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiChevronRight" v-show="start && end" @click.stop="next(false)" />
+                    </div>
+
+                    <div>
+                      <q-btn no-caps flat :label="$q.lang.label.cancel" color="grey" @click="cancel()" />
+                      <q-btn no-caps flat :label="$q.lang.label.refresh" color="secondary" @click="refresh()" />
+                      <q-btn no-caps flat :label="$q.lang.label.set" :color="color" :disable="!start || !end" @click="emitInput()" />
+                    </div>
+                  </q-card-actions>
                 </template>
-              </q-list>
-            </q-card-section>
+              </q-card>
+            </q-popup-proxy>
+          </q-item>
+        </div>
+        <div class="col-auto column justify-center" v-if="start || end">
+          <div>
+            <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiChevronLeft" @click.stop="prev()" />
+            <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiChevronRight" @click.stop="next(true)" />
+            <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiCloseCircle" v-if="clearable" @click.stop="clear()" />
+          </div>
+        </div>
+      </div>
+    </div>
 
-            <q-separator vertical />
-
-            <q-card-section class="q-pa-none col column">
-              <div class="col-auto">
-                <q-list>
-                  <q-item dense class="q-px-xs custom-input">
-                    <q-item-section side>
-                      <q-input v-bind="inputProps" :max="end" :color="color" v-model="start" />
-                    </q-item-section>
-                    <q-item-section>
-                      <q-icon :name="icons.mdiMinus" />
-                    </q-item-section>
-                    <q-item-section side>
-                      <q-input v-bind="inputProps" :min="start" :color="color" v-model="end" />
-                    </q-item-section>
-                  </q-item>
-
-                  <template v-if="comparing">
-                    <q-item-label caption class="q-pt-sm q-pl-md">{{ labels.compare }}</q-item-label>
-                    <q-item dense class="q-px-xs custom-input">
-                      <q-item-section side>
-                        <q-input v-bind="inputProps" :max="prev_end" :color="color" v-model="prev_start" @input="updatePrevChoises" />
-                      </q-item-section>
-                      <q-item-section>
-                        <q-icon :name="icons.mdiMinus" />
-                      </q-item-section>
-                      <q-item-section side>
-                        <q-input v-bind="inputProps" :min="prev_start" :color="color" v-model="prev_end" @change="updatePrevChoises" />
-                      </q-item-section>
-                    </q-item>
-                  </template>
-                </q-list>
-              </div>
-
-              <q-separator />
-
-              <div :style="$q.dark.isActive ? 'background-color: #0B1419' : ''" class="custom-calendar col">
-                <date-picker v-bind="datePickerProps" v-model="selectedDate" />
-              </div>
-            </q-card-section>
-          </q-card-section>
-
-          <template v-if="choise === 'custom' || comparing">
-            <q-separator />
-
-            <q-card-actions align="between">
-              <div class="items-center">
-                <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiChevronLeft" v-show="start && end" @click.stop="prev(false)" />
-                <q-icon class="cursor-pointer custom-hover" color="grey" size="24px" :name="icons.mdiChevronRight" v-show="start && end" @click.stop="next(false)" />
-              </div>
-
-              <div>
-                <q-btn no-caps flat :label="$q.lang.label.cancel" color="grey" @click="cancel()" />
-                <q-btn no-caps flat :label="$q.lang.label.refresh" color="secondary" @click="refresh()" />
-                <q-btn no-caps flat :label="$q.lang.label.set" :color="color" :disable="!start || !end" @click="emitInput()" />
-              </div>
-            </q-card-actions>
+    <div class="col">
+      <q-item class="q-py-xs" style="min-height: 0" dense>
+        <q-item-label class="float-right" caption v-if="comparing && (prev_start || prev_end)">
+          {{ labels.compare }}:
+          {{ displayPrevDate }}
+          <template v-if="getCompareChoiseFromDate && !hidePeriodLabel">
+            ({{ getCompareChoiseFromDate.label }})
           </template>
-        </q-card>
-      </q-popup-proxy>
-    </q-item>
-
-    <q-item-label class="float-right" caption v-if="comparing && (prev_start || prev_end)">
-      {{ labels.compare }}: {{ displayPrevDate }}
-    </q-item-label>
-  </q-list>
+        </q-item-label>
+      </q-item>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -346,8 +360,10 @@ export default {
     getReadableFormat () {
       return (start, end) => {
         if (isSameDate(start, end, 'day')) return formatDate(start, this.displayFormat)
-        else if (isSameDate(start, end, 'month')) return `${formatDate(start, 'D')} - ${formatDate(end, this.displayFormat)}`
-        else if (isSameDate(start, end, 'year')) return `${formatDate(start, 'D MMM')} - ${formatDate(end, this.displayFormat)}`
+        else if (isSameDate(start, end, 'month')) {
+          if (isSameDate(start, startOfDate(start, 'month'), 'day') && isSameDate(end, endOfDate(end, 'month'), 'day')) return formatDate(start, 'MMMM YYYY')
+          return `${formatDate(start, 'D')} - ${formatDate(end, this.displayFormat)}`
+        } else if (isSameDate(start, end, 'year')) return `${formatDate(start, 'D MMM')} - ${formatDate(end, this.displayFormat)}`
         else return `${formatDate(start, this.displayFormat)} - ${formatDate(end, this.displayFormat)}`
       }
     },

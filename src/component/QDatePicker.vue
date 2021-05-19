@@ -27,7 +27,10 @@
                       <q-tabs v-bind="tabsProps(color)" v-model="choise">
                         <q-tab :label="labels.custom" name="custom" />
                         <q-separator spaced />
-                        <q-tab :label="label" :name="value" v-for="{ value, label } in dates" :key="value" />
+                        <template v-for="{ value, label } in dates">
+                          <q-separator v-if="!label" :key="value" />
+                          <q-tab :label="label" :name="value" v-else :key="value" />
+                        </template>
                       </q-tabs>
 
                       <template v-if="compare">
@@ -245,16 +248,17 @@ export default {
       }
     },
     selectedPrevDate () {
-      return (this.comparing && this.prev_start && this.prev_end)
-        ? [{
-            key: 'prevDate',
-            highlight: this.prevColor,
-            dates: [{
-              start: extractDate(this.prev_start, dateFormat),
-              end: extractDate(this.prev_end, dateFormat)
-            }]
+      if (this.comparing && this.prev_start && this.prev_end) {
+        return [{
+          key: 'prevDate',
+          highlight: this.prevColor,
+          dates: [{
+            start: extractDate(this.prev_start, dateFormat),
+            end: extractDate(this.prev_end, dateFormat)
           }]
-        : []
+        }]
+      }
+      return []
     },
 
     // configs
@@ -264,7 +268,7 @@ export default {
         transition: 'slide-v',
         titlePosition: 'left',
         class: 'transparent',
-        rows: this.dates.length >= 9 ? 2 : 1,
+        rows: this.dates.filter(v => Boolean(v.label)).length >= 9 ? 2 : 1,
         isRange: true,
         isInline: true,
         isExpanded: true,
@@ -321,19 +325,21 @@ export default {
     },
     prev_dates () {
       if (!this.comparing) return []
-      return this.dates.map(({ start, end, endOf, prev, value }, idx, dates) => {
-        start = addToDate(start, prev)
-        end = addToDate(end, prev)
+      return this.dates
+        .filter(v => Boolean(v.label))
+        .map(({ start, end, endOf, prev, value }, idx, dates) => {
+          start = addToDate(start, prev)
+          end = addToDate(end, prev)
 
-        if (endOf) end = endOfDate(end, endOf, this.$q.lang.date.firstDayOfWeek)
+          if (endOf) end = endOfDate(end, endOf, this.$q.lang.date.firstDayOfWeek)
 
-        const res = { start, end, value, label: this.labels.prev_period }
+          const res = { start, end, value, label: this.labels.prev_period }
 
-        const next = dates[idx + 1]
-        if (next && deepEqual(next.prev, prev)) res.label = next.label
+          const next = dates[idx + 1]
+          if (next && deepEqual(next.prev, prev)) res.label = next.label
 
-        return res
-      })
+          return res
+        })
     },
     getChoiseFromDate () {
       return this.dates.find(({ start, end }) =>
@@ -417,7 +423,7 @@ export default {
     async move () {
       const ref = this.$refs.datePicker
       if (ref) {
-        const from = extractDate(this.prev_end, dateFormat)
+        const from = extractDate(this.prev_end || this.end, dateFormat)
         const to = extractDate(this.end, dateFormat)
         await ref.$refs.calendar.showPageRange({ from, to })
       }
@@ -552,12 +558,11 @@ export default {
     color $primary !important
 
 .custom-calendar >>>
-  .vc-grid-cell
-    .on-left
-      margin-right 0
+  .on-left
+    margin-right 0
 
-    .on-right
-      margin-left 0
+  .on-right
+    margin-left 0
 
   .vc-container
     border-style none

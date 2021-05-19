@@ -139,11 +139,11 @@
           <tbody>
             <tr v-for="({ label, value, prev, ...rest }, idx) in examples" :key="value">
               <td class="text-center">
-                <q-checkbox dense :val="value" v-model="filter" />
+                <q-checkbox dense :val="value" v-if="label" v-model="filter" />
               </td>
               <td class="text-left cursor-pointer">
                 {{ label }}
-                <q-popup-edit v-model="examples[idx].label">
+                <q-popup-edit v-if="label" v-model="examples[idx].label">
                   <q-input dense autofocus v-model="examples[idx].label" />
                 </q-popup-edit>
               </td>
@@ -173,15 +173,19 @@ export default {
         { label: 'Today', value: 'today', prev: { days: -1 } },
         { label: 'Yesterday', value: 'yesterday', prev: { days: -1 }, start: { days: -1 }, end: { days: -1 } },
         { label: '2 days ago', value: '2_days_ago', prev: { days: -1 }, start: { days: -2 }, end: { days: -2 } },
+        {},
         { label: 'This week', value: 'this_week', prev: { days: -7 }, startOf: 'week', endOf: 'week' },
         { label: 'Last week', value: 'last_week', prev: { days: -7 }, start: { days: -7 }, startOf: 'week', end: { days: -7 }, endOf: 'week' },
         { label: '2 weeks ago', value: '2_weeks_ago', prev: { days: -7 }, start: { days: -14 }, startOf: 'week', end: { days: -14 }, endOf: 'week' },
+        {},
         { label: 'This month', value: 'this_month', prev: { month: -1 }, startOf: 'month', endOf: 'month' },
         { label: 'Last month', value: 'last_month', prev: { month: -1 }, start: { month: -1 }, startOf: 'month', end: { month: -1 }, endOf: 'month' },
         { label: '2 months ago', value: '2_months_ago', prev: { month: -1 }, start: { month: -2 }, startOf: 'month', end: { month: -2 }, endOf: 'month' },
+        {},
         { label: 'This year', value: 'this_year', prev: { year: -1 }, startOf: 'year', endOf: 'year' },
         { label: 'Last year', value: 'last_year', prev: { year: -1 }, start: { year: -1 }, startOf: 'year', end: { year: -1 }, endOf: 'year' },
         { label: '2 years ago', value: '2_years_ago', prev: { year: -1 }, start: { year: -2 }, startOf: 'year', end: { year: -2 }, endOf: 'year' },
+        {},
 
         { label: 'Last 7 days', value: 'last_7_days', prev: { days: -7 }, start: { days: -6 } },
         { label: 'Last 14 days', value: 'last_14_days', prev: { days: -14 }, start: { days: -13 } },
@@ -229,7 +233,7 @@ export default {
 
   computed: {
     periods () {
-      return this.examples.filter(({ value }) => this.filter.includes(value))
+      return this.examples.filter(v => this.filter.includes(v.value))
     },
     toggleAllValue () {
       if (this.filter.length === this.examples.length) return true
